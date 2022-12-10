@@ -18,9 +18,10 @@ class AuthController {
 
             //Save user to DB
             const user = await newUser.save()
+            console.log(user)
             res.status(200).json(user)
         } catch (err) {
-            res.status(500).json(err, 'can not send')
+            res.status(500).json(err)
         }
     }
 

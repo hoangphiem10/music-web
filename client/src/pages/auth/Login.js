@@ -1,14 +1,22 @@
 import React, { useState } from 'react'
 import { Typography, Button, Form, Input, Card } from 'antd'
 import { LockOutlined, UserOutlined } from '@ant-design/icons'
-import { useLocation, useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import AuthSlider from '../../components/AuthSlider'
 import '../../assets/scss/auth.scss'
+import authService from '../../services/authService'
+import { useDispatch, useSelector } from 'react-redux'
 const { Title } = Typography
 
 const Login = () => {
   const [form] = Form.useForm()
-
+  const [username, setUsername] = useState('')
+  const [password, setPassword] = useState('')
+  const dispatch = useDispatch()
+  const navigate = useNavigate()
+  const onFinish = (values) => {
+    authService.login(values, dispatch, navigate)
+  }
   return (
     <div className="login-container">
       <div className="left-container">
@@ -24,7 +32,7 @@ const Login = () => {
             name="normal_login"
             className="login-form"
             initialValues={{ remember: true }}
-            // onFinish={onFinish}
+            onFinish={onFinish}
           >
             <Form.Item
               name="username"
@@ -33,11 +41,11 @@ const Login = () => {
               ]}
             >
               <Input
-                // value={username}
+                value={username}
                 minLength={6}
                 maxLength={20}
                 onChange={(e) => {
-                  // setUsername(e.target.value)
+                  setUsername(e.target.value)
                 }}
                 prefix={<UserOutlined className="site-form-item-icon" />}
                 placeholder="Username"
@@ -52,9 +60,9 @@ const Login = () => {
               <Input.Password
                 prefix={<LockOutlined className="site-form-item-icon" />}
                 minLength={6}
-                // value={password}
+                value={password}
                 onChange={(e) => {
-                  // setPassword(e.target.value)
+                  setPassword(e.target.value)
                 }}
                 placeholder="Password"
               />

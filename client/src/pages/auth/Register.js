@@ -3,12 +3,23 @@ import { Typography, Button, Form, Input, Card, message } from 'antd'
 import { LockOutlined, UserOutlined, MailOutlined } from '@ant-design/icons'
 import '../../assets/scss/auth.scss'
 import AuthSlider from '../../components/AuthSlider'
+import { useDispatch } from 'react-redux'
+import { useNavigate } from 'react-router-dom'
+import authService from '../../services/authService'
 
 const { Title } = Typography
 
 const Register = () => {
   const [form] = Form.useForm()
-
+  const [username, setUsername] = useState('')
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
+  const [confirmPassword, setcConfirmPassword] = useState('')
+  const dispatch = useDispatch()
+  const navigate = useNavigate()
+  const onFinish = (values) => {
+    authService.register(values, dispatch, navigate)
+  }
   return (
     <div className="login-container">
       <div className="left-container">
@@ -21,7 +32,7 @@ const Register = () => {
             name="normal_register"
             className="login-form"
             initialValues={{ remember: true }}
-            // onFinish={onFinish}
+            onFinish={onFinish}
           >
             <Form.Item
               name="username"
@@ -34,9 +45,9 @@ const Register = () => {
                 minLength={6}
                 maxLength={30}
                 onChange={(e) => {
-                  //   setUsername(e.target.value)
+                  setUsername(e.target.value)
                 }}
-                // value = {username}
+                value={username}
                 placeholder="Username"
               />
             </Form.Item>
@@ -56,9 +67,9 @@ const Register = () => {
               <Input
                 prefix={<MailOutlined className="site-form-item-icon" />}
                 onChange={(e) => {
-                  //   setEmail(e.target.value)
+                  setEmail(e.target.value)
                 }}
-                // value = {email}
+                value={email}
                 placeholder="Enter email"
               />
             </Form.Item>
@@ -72,10 +83,10 @@ const Register = () => {
               <Input.Password
                 prefix={<LockOutlined className="site-form-item-icon" />}
                 onChange={(e) => {
-                  //   setPassword(e.target.value)
+                  setPassword(e.target.value)
                 }}
                 minLength={8}
-                // value = {password}
+                value={password}
                 type="password"
                 placeholder="Password"
               />
@@ -104,9 +115,9 @@ const Register = () => {
                 prefix={<LockOutlined className="site-form-item-icon" />}
                 type="password"
                 onChange={(e) => {
-                  //   setcConfirmPassword(e.target.value)
+                  setcConfirmPassword(e.target.value)
                 }}
-                // value = {confirmPassword}
+                value={confirmPassword}
                 placeholder="Confirm Password"
               />
             </Form.Item>
