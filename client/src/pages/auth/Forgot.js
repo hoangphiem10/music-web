@@ -1,9 +1,24 @@
 import React from 'react'
-import { Typography, Button, Form, Input, Card } from 'antd'
+import { Typography, Button, Form, Input, Card, Modal } from 'antd'
 import { MailOutlined } from '@ant-design/icons'
 import AuthSlider from '../../components/AuthSlider'
+import { useNavigate } from 'react-router-dom'
+import authService from '../../services/authService'
 const { Text } = Typography
+
 const Forgot = () => {
+  const [form] = Form.useForm()
+  const navigate = useNavigate()
+  const onFinish = (value) => {
+    authService.forgotPassword(value)
+    Modal.info({
+      title:
+        'Your Password code has been sent to your email,and it will expire in 2 miunites after you receive it',
+      onOk() {
+        window.location.reload()
+      },
+    })
+  }
   return (
     <div className="login-container">
       <div className="left-container">
@@ -35,7 +50,8 @@ const Forgot = () => {
             name="reset-password"
             className="login-form"
             initialValues={{ remember: true }}
-            // onFinish={}
+            form={form}
+            onFinish={onFinish}
           >
             <Form.Item
               name="email"
@@ -67,6 +83,7 @@ const Forgot = () => {
                 type=""
                 htmlType="submit"
                 className="forgot-form-button"
+                // onClick={info}
               >
                 Reset Password
               </Button>

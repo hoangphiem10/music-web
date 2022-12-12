@@ -2,6 +2,7 @@ const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
 const User = require('../models/User')
 const nodemailer = require('nodemailer')
+const jwt_decode = require('jwt-decode')
 let refreshTokens = []
 class AuthController {
     // [POST] /api/auth/register
@@ -38,8 +39,11 @@ class AuthController {
                 req.body.password,
                 user.password,
             )
+            console.log(validPassword)
             if (!validPassword) {
-                res.status(404).json('Incorrect password')
+                return res.status(401).send({
+                    message: 'Invalid password!',
+                })
             }
             if (user && validPassword) {
                 // Generate access token
@@ -152,7 +156,7 @@ class AuthController {
                 { email: oldUser.email, id: oldUser._id },
                 process.env.ACCESS_SECRET_KEY,
                 {
-                    expiresIn: '5m',
+                    expiresIn: '2m',
                 },
             )
             const link = `http://localhost:3000/reset-password/${oldUser._id}/${token}`
@@ -168,7 +172,7 @@ class AuthController {
                 from: 'tuhoangphiem10@gmail.com',
                 to: 'tuhoangphiem10@gmail.com',
                 subject: 'Password Reset',
-                text: `click this link to reset your password: ${link}`,
+                text: `Click this link to reset your password: ${link}`,
             }
 
             transporter.sendMail(mailOptions, function (error, info) {
@@ -179,15 +183,15 @@ class AuthController {
                 }
             })
             console.log(link)
-            return res.json({
-                status: 'Password code has been sent to your email',
-            })
+            return res
+                .status(200)
+                .json('Password code has been sent to your email')
         } catch (error) {
-            console.log(err)
+            res.status(500).json({ error: error })
         }
     }
-    // [POST] api/auth/reset-password/:id/:token
 
+    // [POST] api/auth/reset-password/:id/:token
     resetPassword = async (req, res) => {
         const { id, token } = req.params
         const { password } = req.body
@@ -196,19 +200,30 @@ class AuthController {
             return res.json({ status: "User's not exist" })
         }
         try {
-            jwt.verify(token, process.env.ACCESS_SECRET_KEY, (err, user) => {
-                if (err) {
-                    res.status(403).json('Token is not valid!')
-                    return
-                }
-            })
-            const salt = await bcrypt.genSalt(10)
-            const hashed = await bcrypt.hash(req.body.password, salt)
-            await User.updateOne({ _id: id }, { password: hashed })
-            res.json({ status: 'password updated' })
+            const decodedToken = jwt_decode(token)
+            console.log(Date.now() / 1000, decodedToken.exp)
+            if (decodedToken.exp * 1000 > new Date().getTime()) {
+                jwt.verify(
+                    token,
+                    process.env.ACCESS_SECRET_KEY,
+                    (err, user) => {
+                        if (err) {
+                            res.status(403).json('Token is not valid!')
+                            return
+                        }
+                    },
+                )
+                const salt = await bcrypt.genSalt(10)
+                const hashed = await bcrypt.hash(req.body.password, salt)
+                await User.updateOne({ _id: id }, { password: hashed })
+                res.status(200).json('password updated')
+            } else {
+                res.status(403).json('Token has expired!')
+                return
+            }
         } catch (err) {
             console.log(err)
-            res.json({ status: 'something went wrong' })
+            res.status(500).json({ status: 'something went wrong' })
         }
     }
 }
