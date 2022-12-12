@@ -5,12 +5,11 @@ import {
   loginSuccess,
   logoutError,
   logoutStart,
-  logoutSuccess,
   registerFailed,
   registerStart,
   registerSuccess,
 } from '../redux/authSlice'
-import { Modal } from 'antd'
+import { message, Modal } from 'antd'
 import jwt_decode from 'jwt-decode'
 
 const login = async (user, dispatch, navigate) => {
@@ -22,6 +21,15 @@ const login = async (user, dispatch, navigate) => {
   } catch (err) {
     dispatch(loginError(err))
     console.log(err)
+    if (err.response.status === 500) {
+      message.error('Internal Server Error')
+    }
+    if (err.response.status === 401) {
+      message.error('Password is wrong')
+    }
+    if (err.response.status === 404) {
+      message.error('User not found')
+    }
   }
 }
 const register = async (user, dispatch, navigate) => {
@@ -43,6 +51,16 @@ const register = async (user, dispatch, navigate) => {
   } catch (err) {
     dispatch(registerFailed())
     console.log(err)
+    if (err.response.status === 500) {
+      message.error('Internal Server Error')
+    }
+    if (err.response.status === 400) {
+      if (err.response.data.message === 'Failed! Email already in use!') {
+        message.error('Email already exists.')
+      } else {
+        message.error('Username already exists.')
+      }
+    }
   }
 }
 
@@ -91,10 +109,48 @@ const createAxios = (user, dispatch, stateSuccess) => {
   )
   return newInstance
 }
+
+const forgotPassword = async (value) => {
+  try {
+    console.log(value)
+    const res = await axios.post('auth/forgot-password', {
+      email: value.email,
+    })
+    return res
+  } catch (err) {
+    console.log(err)
+  }
+}
+const resetPassword = async (password, id, token, navigate) => {
+  try {
+    const res = await axios.post(`auth/reset-password/${id}/${token}`, {
+      password: password,
+    })
+    Modal.success({
+      title: 'Updated password successfully',
+      onOk() {
+        navigate('/login')
+        window.location.reload()
+        return res
+      },
+    })
+  } catch (err) {
+    Modal.error({
+      title: 'Your password code has expired!Send email request again ^^ ',
+      onOk() {
+        navigate('/forgot-password')
+        window.location.reload()
+      },
+    })
+    console.log(err)
+  }
+}
 const authService = {
   login,
   register,
   logout,
   createAxios,
+  forgotPassword,
+  resetPassword,
 }
 export default authService

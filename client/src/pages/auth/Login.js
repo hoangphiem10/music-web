@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom'
 import AuthSlider from '../../components/AuthSlider'
 import '../../assets/scss/auth.scss'
 import authService from '../../services/authService'
-import { useDispatch, useSelector } from 'react-redux'
+import { useDispatch } from 'react-redux'
 const { Title } = Typography
 
 const Login = () => {

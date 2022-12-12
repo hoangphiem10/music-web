@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Typography, Button, Form, Input, Card, message } from 'antd'
+import { Typography, Button, Form, Input, Card, message, Modal } from 'antd'
 import { LockOutlined, UserOutlined, MailOutlined } from '@ant-design/icons'
 import '../../assets/scss/auth.scss'
 import AuthSlider from '../../components/AuthSlider'
