@@ -75,7 +75,7 @@ class AuthController {
                     path: '/',
                     sameSite: 'strict',
                 })
-                const { password, ...others } = user._doc
+                const { password, _id, ...others } = user._doc
                 res.status(200).json({ ...others, accessToken })
             }
         } catch (err) {
