@@ -1,6 +1,6 @@
 import { Route, BrowserRouter, Routes, Outlet } from 'react-router-dom'
 import { Forgot, Login, Register, Reset } from './pages/auth'
-import Homepage from './pages/home/Homepage'
+import { Home, ContactPage, MyPlaylist } from './pages/music'
 
 function App() {
   return (
@@ -11,8 +11,10 @@ function App() {
         <Route path="/forgot-password" element={<Forgot />} />
         <Route path="/reset-password/:id/:token" element={<Reset />} />
 
-        <Route element={<Outlet />}>
-          <Route index path="/" element={<Homepage />} />
+        <Route path="/" element={<Outlet />}>
+          <Route index element={<Home />} />
+          <Route path="contact" element={<ContactPage />} />
+          <Route path="my-playlist/:id" element={<MyPlaylist />} />
         </Route>
       </Routes>
     </BrowserRouter>
