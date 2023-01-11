@@ -1,7 +1,7 @@
 import React from 'react'
 import { Typography, Button, Form, Input, Card, Modal } from 'antd'
 import { MailOutlined } from '@ant-design/icons'
-import AuthSlider from '../../components/AuthSlider'
+import AuthSlider from '../../components/Layout/AuthSlider'
 import { useNavigate } from 'react-router-dom'
 import authService from '../../services/authService'
 const { Text } = Typography

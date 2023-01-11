@@ -35,8 +35,20 @@ class AlbumsController {
             albumName,
             albumDescription,
         })
-            .then(res.status(200).json('Updated successfully!'))
+            .then((album) => res.status(200).json({ album }))
             .catch((err) => res.status(400).json({ message: err }))
+    }
+    // [GET] /api/albums/getAnAlbum/:albumId
+    getAnAlbum = async (req, res) => {
+        const id = req.params.albumId
+
+        await Album.findById(id).exec((error, album) => {
+            if (error) {
+                res.status(400).send({ message: error })
+                return
+            }
+            res.status(200).send({ album: album })
+        })
     }
     // [DELETE] /api/albums/deleteAlbum/:id
     deleteAlbum = (req, res, next) => {

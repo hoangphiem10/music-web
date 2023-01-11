@@ -1,7 +1,7 @@
 import React from 'react'
 import { SearchOutlined } from '@ant-design/icons'
-import '../assets/scss/navbar.scss'
-import Logout from './Logout'
+import '../../assets/scss/navbar.scss'
+import Logout from '../Logout'
 const Navbar = () => {
   return (
     <div className="navbar-Container">

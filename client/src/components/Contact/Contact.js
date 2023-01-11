@@ -1,8 +1,8 @@
 import React from 'react'
 import { Button, Card, Col, Form, Input, Row, Typography } from 'antd'
-import '../assets/scss/layout.scss'
-import Navbar from './Navbar'
-import Logout from './Logout'
+import '../../assets/scss/layout.scss'
+import Navbar from '../Layout/Navbar'
+import Logout from '../Logout'
 const Contact = () => {
   const { TextArea } = Input
 

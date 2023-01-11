@@ -1,7 +1,7 @@
 import React from 'react'
 import { Empty } from 'antd'
-import Navbar from './Navbar'
-import '../assets/scss/layout.scss'
+import Navbar from '../Layout/Navbar'
+import '../../assets/scss/layout.scss'
 const Album = () => {
   return (
     <div className="body">
