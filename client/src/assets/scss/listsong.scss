@@ -1,0 +1,14 @@
+thead[class*='ant-table-thead'] th {
+  //   background: linear-gradient(transparent, rgba(0, 0, 0, 1)) !important;
+  background-color: rgb(32, 87, 100) !important;
+  color: white !important;
+}
+.ant-table-wrapper .ant-table {
+  //   background: linear-gradient(transparent, rgba(0, 0, 0, 1)) !important;
+  background-color: rgb(32, 87, 100) !important;
+}
+
+.ant-table-tbody > tr.ant-table-row:hover > td,
+.ant-table-tbody > tr > td.ant-table-cell-row-hover {
+  background-color: rgb(32, 87, 100) !important;
+}

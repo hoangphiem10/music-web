@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { Typography, Button, Form, Input, Card, Modal } from 'antd'
 import { LockOutlined } from '@ant-design/icons'
-import AuthSlider from '../../components/AuthSlider'
+import AuthSlider from '../../components/Layout/AuthSlider'
 import { useNavigate, useParams } from 'react-router-dom'
 import authService from '../../services/authService'
 import jwt_decode from 'jwt-decode'

@@ -4,7 +4,7 @@ import {
   PlusSquareOutlined,
   ContactsOutlined,
 } from '@ant-design/icons'
-import '../assets/scss/sidebar.scss'
+import '../../assets/scss/sidebar.scss'
 
 const Sidebar = () => {
   return (
@@ -32,7 +32,7 @@ const Sidebar = () => {
         <ul>
           <li>
             <PlusSquareOutlined />
-            <a href="/my-playlist/1">Create Playlist</a>
+            <a href="/my-playlist">Create Playlist</a>
           </li>
         </ul>
       </div>

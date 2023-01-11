@@ -1,7 +1,7 @@
 import React from 'react'
 import { Album } from '../../components'
 import '../../assets/scss/layout.scss'
-import Contact from '../../components/Contact'
+import Contact from '../../components/Contact/Contact'
 import Layout from './Layout'
 const Home = () => {
   return (

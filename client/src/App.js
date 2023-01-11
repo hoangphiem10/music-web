@@ -1,6 +1,6 @@
 import { Route, BrowserRouter, Routes, Outlet } from 'react-router-dom'
 import { Forgot, Login, Register, Reset } from './pages/auth'
-import { Home, ContactPage, MyPlaylist } from './pages/music'
+import { Home, ContactPage, Album, MyPlaylist } from './pages/music'
 
 function App() {
   return (
@@ -14,6 +14,7 @@ function App() {
         <Route path="/" element={<Outlet />}>
           <Route index element={<Home />} />
           <Route path="contact" element={<ContactPage />} />
+          <Route path="my-playlist" element={<Album />} />
           <Route path="my-playlist/:id" element={<MyPlaylist />} />
         </Route>
       </Routes>
