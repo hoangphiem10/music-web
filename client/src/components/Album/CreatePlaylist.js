@@ -47,7 +47,6 @@ const Playlist = () => {
         albumName: albumName,
         albumDescription: albumDesc,
       })
-
       navigate('/my-playlist/' + res.data.album._id)
       window.location.reload()
     } catch (e) {
@@ -60,7 +59,6 @@ const Playlist = () => {
   const handleChange = (info) => {
     if (info.file.status === 'uploading') {
       setLoading(true)
-      console.log(loading)
       return
     }
     if (info.file.status === 'done') {
@@ -68,7 +66,6 @@ const Playlist = () => {
       getBase64(info.file.originFileObj, (url) => {
         setLoading(false)
         setAlbumImage(url)
-        console.log(albumImage)
       })
     }
   }
@@ -93,9 +90,10 @@ const Playlist = () => {
             name="album"
             beforeUpload={beforeUpload}
             listType="picture-card"
+            accept=".png,.jpeg,.jpg"
             showUploadList={false}
             onChange={handleChange}
-            action={'http://localhost:8080/api/albums/createAlbums'}
+            action={'http://localhost:8080/api/albums/createImageAlbum'}
           >
             {albumImage ? (
               <img
@@ -104,6 +102,7 @@ const Playlist = () => {
                 style={{
                   width: '100%',
                   height: '100%',
+                  borderRadius: '8px',
                 }}
               />
             ) : (
@@ -129,9 +128,10 @@ const Playlist = () => {
               name="album"
               beforeUpload={beforeUpload}
               listType="picture-card"
+              accept=".png,.jpeg,.jpg"
               showUploadList={false}
               onChange={handleChange}
-              action={'http://localhost:8080/api/albums/createAlbums'}
+              action={'http://localhost:8080/api/albums/createImageAlbum'}
             >
               {albumImage ? (
                 <img

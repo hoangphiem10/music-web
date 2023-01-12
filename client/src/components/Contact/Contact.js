@@ -1,13 +1,21 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Button, Card, Col, Form, Input, Row, Typography } from 'antd'
 import '../../assets/scss/layout.scss'
 import Navbar from '../Layout/Navbar'
 import Logout from '../Logout'
+import axios from '../../api'
 const Contact = () => {
   const { TextArea } = Input
-
   const { Title } = Typography
   const [form] = Form.useForm()
+  const [firstName, setFirstName] = useState('')
+  const [lastName, setLastName] = useState('')
+  const [email, setEmail] = useState('')
+  const [message, setMessage] = useState('')
+
+  const onFinish = async (values) => {
+    // await axios.post()
+  }
   return (
     <div className="body">
       <div className="navbar-Container">
@@ -31,7 +39,7 @@ const Contact = () => {
             name="normal_login"
             className="login-form"
             initialValues={{ remember: true }}
-            //   onFinish={onFinish}
+            onFinish={onFinish}
           >
             <Form.Item name="username">
               <Row>
@@ -46,11 +54,11 @@ const Contact = () => {
                     ]}
                   >
                     <Input
-                      // value={firstName}
+                      value={firstName}
                       minLength={6}
                       maxLength={20}
                       onChange={(e) => {
-                        //   setFirstName(e.target.value)
+                        setFirstName(e.target.value)
                       }}
                       placeholder="First Name"
                     />
@@ -68,9 +76,9 @@ const Contact = () => {
                   >
                     <Input
                       minLength={6}
-                      // value={lastName}
+                      value={lastName}
                       onChange={(e) => {
-                        //   setLastName(e.target.value)
+                        setLastName(e.target.value)
                       }}
                       placeholder="LastName"
                     />
@@ -86,11 +94,10 @@ const Contact = () => {
             >
               <Input
                 minLength={6}
-                // value={lastName}
                 onChange={(e) => {
-                  //   setLastName(e.target.value)
+                  setEmail(e.target.value)
                 }}
-                //   style={{ width: 'calc(50% - 8px)' }}
+                value={email}
                 placeholder="Email"
               />
             </Form.Item>
@@ -102,7 +109,14 @@ const Contact = () => {
               wrapperCol={{ offset: 1, span: 21 }}
               name="message"
             >
-              <TextArea rows={4} placeholder="Message" />
+              <TextArea
+                rows={4}
+                placeholder="Message"
+                onChange={(e) => {
+                  setMessage(e.target.value)
+                }}
+                value={message}
+              />
             </Form.Item>
             <Form.Item wrapperCol={{ offset: 9, span: 5 }}>
               <Button

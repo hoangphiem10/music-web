@@ -7,10 +7,12 @@ const albumsSchema = new mongoose.Schema(
         },
         albumName: {
             type: String,
-            unique: true,
+            unique: false,
+            default: '',
         },
         albumDescription: {
             type: String,
+            default: '',
         },
         albumListSongs: {
             type: Array,
