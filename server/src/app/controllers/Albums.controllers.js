@@ -1,4 +1,5 @@
 const Album = require('../models/Albums.models')
+const ImageAlbum = require('../models/ImageAlbum.models')
 
 class AlbumsController {
     // [GET] /api/albums/getAllAlbums
@@ -17,6 +18,18 @@ class AlbumsController {
             background: req.body.background,
             albumName: req.body.albumName,
             albumDescription: req.body.albumDescription,
+        })
+        try {
+            const savedAlbum = await newAlbum.save()
+            res.status(200).send({ album: savedAlbum })
+        } catch (error) {
+            res.status(400).send({ success: false, msg: error })
+        }
+    }
+    // [POST] /api/albums/createImageAlbum
+    createImageAlbum = async (req, res) => {
+        const newAlbum = new ImageAlbum({
+            background: req.body.background,
         })
         try {
             const savedAlbum = await newAlbum.save()

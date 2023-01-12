@@ -120,13 +120,13 @@ const ListSong = () => {
   return (
     <>
       <AddSong />
-      <Table
+      {/* <Table
         className="music-table"
         columns={columns}
         // dataSource={dataSource}
         pagination={{ pageSize: 10 }}
         scroll={{ y: 450 }}
-      />
+      /> */}
     </>
   )
 }

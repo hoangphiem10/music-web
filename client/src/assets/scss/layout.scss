@@ -23,8 +23,9 @@
 
         // opacity: 0.8;
       }
-      .body__content {
+      .body__contents {
         overflow: scroll;
+        padding: 2rem;
       }
       &::-webkit-scrollbar {
         width: 0.7rem;
@@ -40,4 +41,15 @@
 .ant-form-item {
   // margin-bottom: 4rem !important; // default is 16px
   // background-color: rgb(243 244 246 / var(--tw-bg-opacity));
+}
+.ant-card .ant-card-cover > * {
+  height: 200px !important;
+}
+.ant-card-hoverable {
+  width: 230px !important;
+  margin-bottom: 30px;
+  &:hover {
+    transform: scale(1.05);
+    // box-shadow: 0 13px 40px -5px rgba(243, 244, 246, 0.8);
+  }
 }

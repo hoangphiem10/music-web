@@ -80,13 +80,7 @@ const Playlist = () => {
       console.log(res.data.album)
     })
   }, [])
-  // useEffect(() => {
-  //   form.setFieldsValue({
-  //     background: album?.albumImage,
-  //     albumName: album?.albumName,
-  //     albumDescription: album?.albumDescription,
-  //   })
-  // }, [album])
+
   const uploadButton = (
     <div>
       {loading ? <LoadingOutlined /> : <PlusOutlined />}
@@ -109,7 +103,7 @@ const Playlist = () => {
             listType="picture-card"
             showUploadList={false}
             onChange={handleChange}
-            action={'http://localhost:8080/api/albums/createAlbums'}
+            action={'http://localhost:8080/api/albums/createImageAlbum'}
           >
             {albumImage ? (
               <img
@@ -118,6 +112,7 @@ const Playlist = () => {
                 style={{
                   width: '100%',
                   height: '100%',
+                  borderRadius: '8px',
                 }}
               />
             ) : (
@@ -145,17 +140,8 @@ const Playlist = () => {
               listType="picture-card"
               showUploadList={false}
               onChange={handleChange}
-              action={'http://localhost:8080/api/albums/createAlbums'}
+              action={'http://localhost:8080/api/albums/createImageAlbum'}
             >
-              {/* <div className="imageInn">
-                <img
-                  src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR1zUdQEs_0BFeILsBbsS_ai-HfEUrIlvP_Fg&usqp=CAU"
-                  alt="selected playlist"
-                />
-              </div>
-              <div className="hoverImg">
-                <img src={edit} alt="selected playlist" />
-              </div> */}
               {albumImage ? (
                 <img
                   src={albumImage}
@@ -163,6 +149,7 @@ const Playlist = () => {
                   style={{
                     width: '100%',
                     height: '100%',
+                    borderRadius: '8px',
                   }}
                 />
               ) : (
