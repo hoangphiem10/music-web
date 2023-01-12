@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Button, Card, Col, Form, Input, Row, Typography } from 'antd'
+import { Button, Card, Col, Form, Input, Modal, Row, Typography } from 'antd'
 import '../../assets/scss/layout.scss'
 import Navbar from '../Layout/Navbar'
 import Logout from '../Logout'
@@ -14,7 +14,25 @@ const Contact = () => {
   const [message, setMessage] = useState('')
 
   const onFinish = async (values) => {
-    // await axios.post()
+    await axios
+      .post('contact/createContact', {
+        firstname: values.firstname,
+        lastname: values.lastname,
+        email: values.email,
+        message: values.message,
+      })
+      .then((res) => {
+        console.log(res)
+        Modal.success({
+          title: "Your message has been sent to Phu Ty's email",
+          onOk() {
+            window.location.reload('/')
+          },
+        })
+      })
+      .catch((err) => {
+        console.log(err)
+      })
   }
   return (
     <div className="body">
@@ -55,7 +73,7 @@ const Contact = () => {
                   >
                     <Input
                       value={firstName}
-                      minLength={6}
+                      minLength={1}
                       maxLength={20}
                       onChange={(e) => {
                         setFirstName(e.target.value)
@@ -75,7 +93,7 @@ const Contact = () => {
                     ]}
                   >
                     <Input
-                      minLength={6}
+                      minLength={1}
                       value={lastName}
                       onChange={(e) => {
                         setLastName(e.target.value)
