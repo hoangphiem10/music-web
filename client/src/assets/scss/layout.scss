@@ -2,31 +2,19 @@
   max-width: 100vw;
   max-height: 100vh;
   overflow: hidden;
-  //   display: grid;
-  //   grid-template-rows: 85vh 15vh;
+  display: grid;
+  grid-template-rows: 85vh 15vh;
   .spotify__body {
     display: grid;
     grid-template-columns: 15vw 85vw;
     height: 100%;
     width: 100%;
-    background: linear-gradient(transparent, rgba(0, 0, 0, 1));
+    background: linear-gradient(transparent, rgba(0, 0, 0, 0.8));
     background-color: rgb(32, 87, 100);
     .body {
-      height: 100vh;
+      height: 100%;
       width: 100%;
       overflow: auto;
-      .ant-row .ant-form-item-row {
-        margin-bottom: -26px !important; // default is 16px
-      }
-      .ant-card {
-        background: rgba(243, 244, 246, 0.8);
-
-        // opacity: 0.8;
-      }
-      .body__contents {
-        overflow: scroll;
-        padding: 2rem;
-      }
       &::-webkit-scrollbar {
         width: 0.7rem;
         max-height: 2rem;
@@ -35,6 +23,17 @@
         }
       }
     }
+  }
+  .spotify__footer {
+    width: 100%;
+    background-color: #181818;
+    border-top: 1px solid #282828;
+    display: grid;
+    z-index: 999;
+    grid-template-columns: 1fr 5fr;
+    align-items: center;
+    justify-content: center;
+    padding: 0.5rem;
   }
 }
 

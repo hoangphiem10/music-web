@@ -1,12 +1,18 @@
 import { Button, Form, Input, message, Modal, Space, Upload } from 'antd'
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { PlusOutlined, LoadingOutlined } from '@ant-design/icons'
+import '../../assets/scss/addsong.scss'
+import axios from '../../api'
+import { useParams } from 'react-router-dom'
 
 const AddSong = () => {
+  const { id } = useParams()
   const { TextArea } = Input
-  const [imageSong, setImageSong] = useState(null)
+  const [imageSong, setImageSong] = useState('')
   const [loading, setLoading] = useState(false)
   const [isModalOpen, setIsModalOpen] = useState(false)
+  const [nameSong, setNameSong] = useState('')
+  const [audio, setAudio] = useState(null)
   const [form] = Form.useForm()
   const getBase64 = (img, callback) => {
     const reader = new FileReader()
@@ -29,6 +35,15 @@ const AddSong = () => {
   }
   const handleOk = () => {
     setIsModalOpen(false)
+    axios
+      .post('listSongs/createSong/' + id, {
+        image: imageSong,
+        name: nameSong,
+        audio: audio,
+      })
+      .then((res) => console.log(res))
+      .catch((err) => console.log(err))
+    window.location.reload()
   }
 
   const handleCancel = () => {
@@ -47,6 +62,7 @@ const AddSong = () => {
       })
     }
   }
+
   const uploadButton = (
     <div>
       {loading ? <LoadingOutlined /> : <PlusOutlined />}
@@ -69,7 +85,7 @@ const AddSong = () => {
         icon={<PlusOutlined />}
         size="medium"
       >
-        Add More
+        Add Song
       </Button>
       <Modal
         title="Edit details"
@@ -85,17 +101,8 @@ const AddSong = () => {
               listType="picture-card"
               showUploadList={false}
               onChange={handleChange}
-              action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
+              action="http://localhost:8080/api/albums/createImageAlbum"
             >
-              {/* <div className="imageInn">
-                <img
-                  src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR1zUdQEs_0BFeILsBbsS_ai-HfEUrIlvP_Fg&usqp=CAU"
-                  alt="selected playlist"
-                />
-              </div>
-              <div className="hoverImg">
-                <img src={edit} alt="selected playlist" />
-              </div> */}
               {imageSong ? (
                 <img
                   src={imageSong}
@@ -121,30 +128,23 @@ const AddSong = () => {
               <Form.Item name="name">
                 <Input
                   onChange={(e) => {
-                    // setUsername(e.target.value)
+                    setNameSong(e.target.value)
                   }}
-                  // value={username}
+                  value={nameSong}
                   placeholder="Add a name"
                 />
               </Form.Item>
-              <Form.Item name="author">
-                <Input
-                  onChange={(e) => {
-                    // setUsername(e.target.value)
-                  }}
-                  // value={username}
-                  placeholder="Add author"
-                />
-              </Form.Item>
-              <Form.Item name="album">
-                <Input
-                  onChange={(e) => {
-                    // setUsername(e.target.value)
-                  }}
-                  // value={username}
-                  placeholder="Add album name"
-                />
-              </Form.Item>
+
+              {/* <Form.Item name="song"> */}
+              <input
+                type="file"
+                onChange={(e) => {
+                  if (e.target.files[0]) {
+                    setAudio(URL.createObjectURL(e.target.files[0]))
+                  }
+                }}
+              />
+              {/* </Form.Item> */}
             </Form>
           </div>
         </div>

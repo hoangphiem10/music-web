@@ -1,0 +1,24 @@
+.Container-currentTrack {
+  .track {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    .track__image {
+      img {
+        height: 6rem;
+      }
+    }
+    .track__info {
+      display: flex;
+      flex-direction: column;
+      gap: 0.3rem;
+      .track__info__track__name {
+        color: white;
+      }
+      .track__info__track__artists {
+        color: #b3b3b3;
+        font-size: 12px;
+      }
+    }
+  }
+}

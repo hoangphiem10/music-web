@@ -12,13 +12,14 @@ import {
 import storage from 'redux-persist/lib/storage'
 
 import authReducer from './authSlice'
+import songReducer from './songSlice'
 
 const persistConfig = {
   key: 'root',
   version: 1,
   storage,
 }
-const rootReducer = combineReducers({ auth: authReducer })
+const rootReducer = combineReducers({ auth: authReducer, song: songReducer })
 const persistedReducer = persistReducer(persistConfig, rootReducer)
 
 export const store = configureStore({

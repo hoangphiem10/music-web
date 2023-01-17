@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import { Album, Navbar, Sidebar, Contact } from '../../components'
 import '../../assets/scss/layout.scss'
+import Footer from '../../components/Layout/Footer'
 const Layout = ({ component: Component }) => {
   const user = useSelector((state) => state.auth.login?.currentUser)
   const navigate = useNavigate()
@@ -20,7 +21,9 @@ const Layout = ({ component: Component }) => {
         {/* </div>
         </div> */}
       </div>
-      <div className="spotify__footer">{/* <Footer /> */}</div>
+      <div className="spotify__footer">
+        <Footer />
+      </div>
     </div>
   )
 }

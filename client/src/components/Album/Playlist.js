@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Form, Input, message, Modal, Upload } from 'antd'
+import { Form, Input, message, Modal, Space, Upload } from 'antd'
 import Logout from '../Logout'
 import { LoadingOutlined, PlusOutlined } from '@ant-design/icons'
 
@@ -7,6 +7,7 @@ import axios from '../../api'
 import '../../assets/scss/playlist.scss'
 import ListSong from './ListSong'
 import { useParams } from 'react-router-dom'
+import CurrentTrack from './CurrentTrack'
 const Playlist = () => {
   const { TextArea } = Input
   const { id } = useParams()
@@ -95,6 +96,10 @@ const Playlist = () => {
   )
   return (
     <div className="playlist-container">
+      <div className="navbar-Container">
+        <div className=""></div>
+        <Logout />
+      </div>
       <div className="playlist" onClick={showModal}>
         <div className="image ">
           <Upload
@@ -189,8 +194,6 @@ const Playlist = () => {
         </div>
       </Modal>
       <ListSong />
-
-      <div className="body__contents"></div>
     </div>
   )
 }

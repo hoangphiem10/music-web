@@ -1,132 +1,113 @@
-import { Input, Space, Table, Tag } from 'antd'
-import { SearchOutlined, DeleteOutlined } from '@ant-design/icons'
-import React from 'react'
+import React, { useEffect, useRef, useState } from 'react'
+import { AiFillClockCircle } from 'react-icons/ai'
 import AddSong from './AddSong'
 import '../../assets/scss/listsong.scss'
-
+import Logout from '../Logout'
+import { useParams } from 'react-router-dom'
+import axios from '../../api'
+import { useDispatch, useSelector } from 'react-redux'
+import { getListSongs, getSongById } from '../../redux/songSlice'
+import { DeleteOutlined, EditOutlined } from '@ant-design/icons'
+import { Space } from 'antd'
 const ListSong = () => {
-  const columns = [
-    {
-      title: '#',
-      dataIndex: '#',
-      key: '#',
-      align: 'center',
-      //   sortOrder: sortedInfo.columnKey === 'price' ? sortedInfo.order : null,
-      sorter: (a, b) => {
-        return a.price - b.price
-      },
-    },
-    {
-      title: 'Title',
-      dataIndex: 'Title',
-      key: 'Title',
-      align: 'center',
-      //   filteredValue: (filteredInfo.name || [ filteredName ]) || null,
-      filterDropdown: ({ setSelectedKeys, selectedKeys, confirm }) => {
-        return (
-          <Input.Search
-            placeholder="Type text here"
-            className="search-name"
-            value={selectedKeys[0]}
-            onChange={(e) => {
-              //   setSelectedKeys(e.target.value ? [ e.target.value ] : [])
-              //   setFilteredName(e.target.value ? e.target.value : '')
-            }}
-            onSearch={() => {
-              confirm()
-            }}
-          />
-        )
-      },
-      filterIcon: () => {
-        return <SearchOutlined />
-      },
-      onFilter: (value, record) => {
-        return record.name.toLowerCase().includes(value.toLowerCase())
-      },
-    },
-    // {
-    //   title: 'Image',
-    //   dataIndex: 'image',
-    //   key: 'image',
-    //   align: 'center',
-    //   width: 400,
-    //   render: (images) =>
-    //     images.map((image, idx) => {
-    //       return (
-    //         <img
-    //           key={idx}
-    //           src={image}
-    //           alt=""
-    //           style={{ width: '80px', marginTop: '10px' }}
-    //         />
-    //       )
-    //     }),
-    // },
-    {
-      title: 'Album',
-      dataIndex: 'Album',
-      key: 'Album',
-      align: 'center',
-      //   sortOrder: sortedInfo.columnKey === 'price' ? sortedInfo.order : null,
-      sorter: (a, b) => {
-        // return a.price - b.price
-      },
-    },
-    {
-      title: 'Date added',
-      dataIndex: 'Date added',
-      key: 'Date added',
-      align: 'center',
-      //   sortOrder: sortedInfo.columnKey === 'remained' ? sortedInfo.order : null,
-      //   sorter: (a, b) => a.remained - b.remained,
-    },
-    {
-      title: 'Duration',
-      key: 'Duration',
-      dataIndex: 'Duration',
-      align: 'center',
-      render: (_, { colors }) => (
-        <>
-          {colors.map((color) => {
-            return (
-              <Tag color={color} key={color} style={{ marginTop: '10px' }}>
-                <Space size="middle">{color.toUpperCase()}</Space>
-              </Tag>
-            )
-          })}
-        </>
-      ),
-    },
-    {
-      title: 'Action',
-      key: 'action',
-      align: 'center',
-      render: (record) => (
-        <Space size="middle" style={{}}>
-          {/* <EditButton 
-                editProduct = {record}
-              /> */}
-          <DeleteOutlined
-            style={{ fontSize: '18px', color: 'red' }}
-            onClick={() => {
-              //   onDeleteStudent(record)
-            }}
-          />
-        </Space>
-      ),
-    },
-  ]
+  const { id } = useParams()
+  const dispatch = useDispatch()
+  const listSong = useSelector((state) => state.song.listsong.songs)
+
+  useEffect(() => {
+    const getInitialPlaylist = async () => {
+      const response = await axios.get(`listSongs/getAllSongs/${id}`)
+      // console.log()
+      dispatch(getListSongs(response.data))
+      // dispatch(getSongById(response.albumListSongs[0]))
+    }
+    getInitialPlaylist()
+  }, [])
+  console.log(listSong)
+
   return (
     <>
       <AddSong />
-      {/* <Table
-        className="music-table"
-        columns={columns}
-        // dataSource={dataSource}
-        pagination={{ pageSize: 10 }}
-        scroll={{ y: 450 }}
-      /> */}
+      <div className="Container-listsong">
+        {listSong && (
+          <div className="list">
+            <div className="header-row">
+              <div className="col">
+                <span>#</span>
+              </div>
+              <div className="col">
+                <span>TITLE</span>
+              </div>
+              <div className="col">
+                <span>ALBUM</span>
+              </div>
+              <div className="col">
+                <span>
+                  <AiFillClockCircle />
+                </span>
+              </div>
+              <div className="col">
+                <span>Action</span>
+              </div>
+            </div>
+            <div className="tracks">
+              {listSong.map(
+                (
+                  {
+                    name,
+                    image,
+                    // duration,
+                    // album,
+                    // context_uri,
+                    // track_number,
+                  },
+                  index,
+                ) => {
+                  return (
+                    <div className="row" key={index}>
+                      <div className="col">
+                        <span>{index + 1}</span>
+                      </div>
+                      <div className="col detail">
+                        <div className="image">
+                          <img src={image} alt="track" />
+                        </div>
+                        <div className="info">
+                          <span className="name">{name}</span>
+                          <span style={{ fontSize: '14px', color: 'grey' }}>
+                            PT20
+                          </span>
+                        </div>
+                      </div>
+                      <div className="col">
+                        <span>{}</span>
+                      </div>
+                      <div className="col">
+                        {/* <span>{msToMinutesAndSeconds(duration)}</span> */}
+                      </div>
+                      <div className="col">
+                        <Space size="middle" style={{}}>
+                          <EditOutlined
+                            onClick={() => {
+                              console.log('hihi')
+                            }}
+                          />
+                          <DeleteOutlined
+                            style={{ color: 'red' }}
+                            onClick={() => {
+                              console.log('hihi')
+                            }}
+                          />
+                        </Space>
+                      </div>
+                    </div>
+                  )
+                },
+              )}
+            </div>
+          </div>
+        )}
+      </div>
     </>
   )
 }
