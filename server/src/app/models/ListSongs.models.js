@@ -9,15 +9,19 @@ const listSongsSchema = new mongoose.Schema(
             type: String,
             unique: true,
         },
-        duration: {
+        audio: {
             type: String,
+            unique: true,
         },
-        artist: {
-            type: String,
-        },
-        albumName: {
-            type: String,
-        },
+        // duration: {
+        //     type: String,
+        // },
+        // artist: {
+        //     type: String,
+        // },
+        // albumName: {
+        //     type: String,
+        // },
     },
     { timestamps: true },
 )

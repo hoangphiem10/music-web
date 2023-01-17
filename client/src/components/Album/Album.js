@@ -33,7 +33,10 @@ const Album = () => {
   return (
     <div className="body">
       <div>
-        <div className="navbar-Container">
+        <div
+          className="navbar-Container"
+          style={{ padding: '2rem', height: ' 15vh' }}
+        >
           <div className="search__bar">
             <SearchOutlined />
             <input
