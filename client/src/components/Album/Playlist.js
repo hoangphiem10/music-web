@@ -8,14 +8,18 @@ import '../../assets/scss/playlist.scss'
 import ListSong from './ListSong'
 import { useParams } from 'react-router-dom'
 import CurrentTrack from './CurrentTrack'
+import { useDispatch } from 'react-redux'
+import { getAlbumName } from '../../redux/songSlice'
 const Playlist = () => {
   const { TextArea } = Input
   const { id } = useParams()
+  const dispatch = useDispatch()
 
   const [albumImage, setAlbumImage] = useState(null)
-  const [albumName, setAlbumName] = useState(null)
-  const [albumDesc, setAlbumDesc] = useState(null)
-  const [album, setAlbum] = useState(null)
+  let [editValue, setEditValue] = useState({
+    albumName: '',
+    albumDescription: '',
+  })
 
   const [loading, setLoading] = useState(false)
   const [isModalOpen, setIsModalOpen] = useState(false)
@@ -48,10 +52,12 @@ const Playlist = () => {
     try {
       const res = await axios.put('albums/updateAlbum/' + id, {
         background: albumImage,
-        albumName: albumName,
-        albumDescription: albumDesc,
+        albumName: editValue.albumName,
+        albumDescription: editValue.albumDescription,
       })
-      console.log(res)
+      dispatch(getAlbumName(editValue.albumName))
+
+      // console.log(res)
     } catch (e) {
       console.log(e)
     }
@@ -70,18 +76,25 @@ const Playlist = () => {
       getBase64(info.file.originFileObj, (url) => {
         setLoading(false)
         setAlbumImage(url)
-        console.log(albumImage)
       })
     }
   }
   useEffect(() => {
     axios.get('albums/getAnAlbum/' + id).then((res) => {
-      setAlbum(res.data.album)
+      // setAlbum(res.data.album)
+      setEditValue(res.data.album)
       setAlbumImage(res.data.album.background[0])
-      console.log(res.data.album)
     })
   }, [])
-
+  useEffect(() => {
+    if (form.__INTERNAL__.name) {
+      // do form logic here
+      form.setFieldsValue({
+        name: editValue.albumName,
+        description: editValue.albumDescription,
+      })
+    }
+  }, [editValue])
   const uploadButton = (
     <div>
       {loading ? <LoadingOutlined /> : <PlusOutlined />}
@@ -127,8 +140,14 @@ const Playlist = () => {
         </div>
         <div className="details">
           <span className="type">PLAYLIST</span>
-          <span className="title">{album?.albumName}</span>
-          <p className="description">{album?.albumDescription}</p>
+          <span className="title">
+            {editValue?.albumName ? editValue?.albumName : 'MY PLAYLIST'}
+          </span>
+          <p className="description">
+            {editValue?.albumDescription
+              ? editValue?.albumDescription
+              : 'Description'}
+          </p>
         </div>
       </div>
       <Modal
@@ -172,10 +191,10 @@ const Playlist = () => {
             >
               <Form.Item name="name">
                 <Input
-                  // onChange={(e) => {
-                  //   setAlbumName(e.target.value)
-                  // }}
-                  value={album?.albumName}
+                  onChange={(e) => {
+                    setEditValue({ ...editValue, albumName: e.target.value })
+                  }}
+                  value={editValue?.albumName}
                   placeholder="Add a name"
                 />
               </Form.Item>
@@ -183,10 +202,13 @@ const Playlist = () => {
                 <TextArea
                   rows={4}
                   placeholder="Add an optional description"
-                  // onChange={(e) => {
-                  //   setAlbumDesc(e.target.value)
-                  // }}
-                  value={album?.albumDescription}
+                  onChange={(e) => {
+                    setEditValue({
+                      ...editValue,
+                      albumDescription: e.target.value,
+                    })
+                  }}
+                  value={editValue?.albumDescription}
                 />
               </Form.Item>
             </Form>

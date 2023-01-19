@@ -13,9 +13,9 @@ const listSongsSchema = new mongoose.Schema(
             type: String,
             unique: true,
         },
-        // duration: {
-        //     type: String,
-        // },
+        duration: {
+            type: Number,
+        },
         // artist: {
         //     type: String,
         // },

@@ -9,7 +9,14 @@ const songSlice = createSlice({
     song: {
       name: '',
       image: '',
+      audio: '',
       track_number: 0,
+    },
+    albumName: {
+      name: '',
+    },
+    duration: {
+      time: '',
     },
   },
   reducers: {
@@ -19,8 +26,15 @@ const songSlice = createSlice({
     getSongById: (state, action) => {
       state.song = action.payload
     },
+    getAlbumName: (state, action) => {
+      state.albumName = action.payload
+    },
+    getDuration: (state, action) => {
+      state.duration = action.payload
+    },
   },
 })
 
-export const { getListSongs, getSongById } = songSlice.actions
+export const { getListSongs, getSongById, getAlbumName, getDuration } =
+  songSlice.actions
 export default songSlice.reducer

@@ -4,6 +4,9 @@ import { PlusOutlined, LoadingOutlined } from '@ant-design/icons'
 import '../../assets/scss/addsong.scss'
 import axios from '../../api'
 import { useParams } from 'react-router-dom'
+import getBlobDuration from 'get-blob-duration'
+import { useDispatch } from 'react-redux'
+import { getDuration } from '../../redux/songSlice'
 
 const AddSong = () => {
   const { id } = useParams()
@@ -13,7 +16,11 @@ const AddSong = () => {
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [nameSong, setNameSong] = useState('')
   const [audio, setAudio] = useState(null)
+  const [duration, setDuration] = useState(null)
+
   const [form] = Form.useForm()
+  const dispatch = useDispatch()
+
   const getBase64 = (img, callback) => {
     const reader = new FileReader()
     reader.addEventListener('load', () => callback(reader.result))
@@ -40,6 +47,7 @@ const AddSong = () => {
         image: imageSong,
         name: nameSong,
         audio: audio,
+        duration: duration,
       })
       .then((res) => console.log(res))
       .catch((err) => console.log(err))
@@ -88,7 +96,7 @@ const AddSong = () => {
         Add Song
       </Button>
       <Modal
-        title="Edit details"
+        title="Add your song "
         open={isModalOpen}
         onOk={handleOk}
         onCancel={handleCancel}
@@ -138,13 +146,21 @@ const AddSong = () => {
               {/* <Form.Item name="song"> */}
               <input
                 type="file"
+                name="audio"
                 onChange={(e) => {
                   if (e.target.files[0]) {
-                    setAudio(URL.createObjectURL(e.target.files[0]))
+                    getBlobDuration(e.target.files[0]).then(function (
+                      duration,
+                    ) {
+                      setDuration(duration)
+                    })
+
+                    getBase64(e.target.files[0], (url) => {
+                      setAudio(url)
+                    })
                   }
                 }}
               />
-              {/* </Form.Item> */}
             </Form>
           </div>
         </div>

@@ -7,13 +7,15 @@ import Logout from '../Logout'
 import '../../assets/scss/layout.scss'
 import { Card, Col, Row } from 'antd'
 import { useNavigate } from 'react-router-dom'
+import { useDispatch } from 'react-redux'
+import { getAlbumName } from '../../redux/songSlice'
 
 const { Meta } = Card
 const Album = () => {
   const navigate = useNavigate()
   const [listAlbum, setListAlbum] = useState(null)
   const [search, setSearch] = useState('')
-
+  const dispatch = useDispatch()
   useEffect(() => {
     axios.get('albums/getAllAlbums').then((res) => {
       if (search) {
@@ -52,24 +54,41 @@ const Album = () => {
         </div>
       </div>
 
-      <div className="body__contents">
+      <div className="body__contents" style={{ paddingLeft: '2.5em' }}>
         {listAlbum ? (
           <Row gutter={[16, 32]}>
             {listAlbum.map((album) => (
-              <Col key={album._id} span={6}>
+              <Col
+                key={album._id}
+                span={6}
+                onClick={() => {
+                  dispatch(getAlbumName(album.albumName))
+                  console.log(album.albumName)
+                }}
+              >
                 <Card
                   hoverable
                   style={{
                     width: 220,
                   }}
-                  cover={<img alt="album" src={album.background} />}
+                  cover={
+                    <img
+                      alt="album"
+                      src={album.background}
+                      style={{ objectFit: 'cover' }}
+                    />
+                  }
                   onClick={() => {
                     navigate('/my-playlist/' + album._id)
                   }}
                 >
                   <Meta
-                    title={album.albumName}
-                    description={album.albumDescription}
+                    title={album.albumName ? album.albumName : 'MY PLAYLIST'}
+                    description={
+                      album.albumDescription
+                        ? album.albumDescription
+                        : 'Description'
+                    }
                   />
                 </Card>
               </Col>

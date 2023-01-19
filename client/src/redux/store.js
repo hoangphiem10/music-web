@@ -10,14 +10,14 @@ import {
   REGISTER,
 } from 'redux-persist'
 import storage from 'redux-persist/lib/storage'
-
+import localforage from 'localforage'
 import authReducer from './authSlice'
 import songReducer from './songSlice'
 
 const persistConfig = {
   key: 'root',
   version: 1,
-  storage,
+  storage: localforage,
 }
 const rootReducer = combineReducers({ auth: authReducer, song: songReducer })
 const persistedReducer = persistReducer(persistConfig, rootReducer)
