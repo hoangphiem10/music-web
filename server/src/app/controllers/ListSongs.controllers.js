@@ -34,7 +34,7 @@ class ListSongsController {
         }
     }
 
-    // [PUT] /api/listSongs/updateSong/albumId/:songId
+    // [PUT] /api/listSongs/updateSong/:albumId/:songId
     updateSong = async (req, res) => {
         const { albumId, songId } = req.params
 
@@ -47,9 +47,9 @@ class ListSongsController {
                 $set: {
                     'albumListSongs.$.image': req.body.image,
                     'albumListSongs.$.name': req.body.name,
-                    'albumListSongs.$.duration': req.body.duration,
-                    'albumListSongs.$.artist': req.body.artist,
-                    'albumListSongs.$.albumName': req.body.albumName,
+                    'albumListSongs.$.audio': req.body.audio,
+                    // 'albumListSongs.$.artist': req.body.artist,
+                    // 'albumListSongs.$.albumName': req.body.albumName,
                 },
             },
         )
@@ -76,7 +76,6 @@ class ListSongsController {
             },
         )
             .then((song) => {
-                console.log(song)
                 res.status(200).json('Deleted successfully!')
             })
             .catch((err) => {
