@@ -2,19 +2,17 @@ import React, { useEffect, useState } from 'react'
 import { Form, Input, message, Modal, Space, Upload } from 'antd'
 import Logout from '../Logout'
 import { LoadingOutlined, PlusOutlined } from '@ant-design/icons'
-
 import axios from '../../api'
 import '../../assets/scss/playlist.scss'
 import ListSong from './ListSong'
 import { useParams } from 'react-router-dom'
-import CurrentTrack from './CurrentTrack'
 import { useDispatch } from 'react-redux'
 import { getAlbumName } from '../../redux/songSlice'
+import musicService from '../../services/musicService'
 const Playlist = () => {
   const { TextArea } = Input
   const { id } = useParams()
   const dispatch = useDispatch()
-
   const [albumImage, setAlbumImage] = useState(null)
   let [editValue, setEditValue] = useState({
     albumName: '',
@@ -50,7 +48,7 @@ const Playlist = () => {
   const handleOk = async () => {
     setIsModalOpen(false)
     try {
-      const res = await axios.put('albums/updateAlbum/' + id, {
+      await axios.put('albums/updateAlbum/' + id, {
         background: albumImage,
         albumName: editValue.albumName,
         albumDescription: editValue.albumDescription,
@@ -86,6 +84,7 @@ const Playlist = () => {
       setAlbumImage(res.data.album.background[0])
     })
   }, [])
+
   useEffect(() => {
     if (form.__INTERNAL__.name) {
       // do form logic here

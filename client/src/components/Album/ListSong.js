@@ -11,34 +11,28 @@ import { useDispatch, useSelector } from 'react-redux'
 import { getDuration, getListSongs, getSongById } from '../../redux/songSlice'
 import { DeleteOutlined, EditOutlined } from '@ant-design/icons'
 import { Form, Input, message, Modal, Space, Upload } from 'antd'
-
+import musicService from '../../services/musicService'
 const ListSong = () => {
   const { id } = useParams()
   const dispatch = useDispatch()
-  const listSong = useSelector((state) => state.song.listsong.songs)
+  let listSong = useSelector((state) => state.song.listsong.songs)
   const albumName = useSelector((state) => state.song.albumName)
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [loading, setLoading] = useState(false)
-  // const [name, setName] = useState(song.name)
-  // const [image, setImage] = useState(song.image)
-  // const [audio, setAudio] = useState(song.audio)
-
   const [track_number, setTrackNumber] = useState(null)
-
+  console.log(listSong)
   const [form] = Form.useForm()
   let [editValue, setEditValue] = useState({
     name: '',
     image: '',
     audio: '',
+    duration: 0,
     track_number: '',
   })
   useEffect(() => {
-    const getInitialPlaylist = async () => {
-      const response = await axios.get(`listSongs/getAllSongs/${id}`)
-      dispatch(getListSongs(response.data))
-    }
-    getInitialPlaylist()
-  }, [])
+    musicService.getAllSongs(id, dispatch)
+  }, [dispatch, id])
+
   useEffect(() => {
     if (form.__INTERNAL__.name) {
       // do form logic here
@@ -71,17 +65,14 @@ const ListSong = () => {
   }
   const handleOk = () => {
     setIsModalOpen(false)
-    axios
-      .put(`listSongs/updateSong/${id}/${listSong[track_number]._id}`, {
-        image: editValue.image,
-        name: editValue.name,
-        audio: editValue.audio,
-      })
-      .then((res) => {
-        console.log(listSong[track_number])
-      })
-      .catch((err) => console.log(err))
-    // window.location.reload()
+    musicService.updateSong(
+      editValue,
+      id,
+      listSong[track_number]._id,
+      track_number,
+      listSong,
+      dispatch,
+    )
   }
 
   const handleCancel = () => {
@@ -90,13 +81,12 @@ const ListSong = () => {
   const handleChange = (info) => {
     if (info.file.status === 'uploading') {
       setLoading(true)
-      console.log('haha')
 
       return
     }
     if (info.file.status === 'done') {
       // Get this url from response in real world.
-      console.log('hihi')
+
       getBase64(info.file.originFileObj, (url) => {
         setLoading(false)
         setEditValue({ ...editValue, image: url })
@@ -120,13 +110,7 @@ const ListSong = () => {
     Modal.confirm({
       title: 'Are you sure,you want to delete this song?',
       onOk: () => {
-        axios
-          .delete(`listSongs/deleteSong/${id}/${listSong[index]._id}`)
-          .then((res) => {
-            console.log(res)
-            window.location.reload()
-          })
-          .catch((err) => console.log(err))
+        musicService.deleteSong(id, listSong[index]._id, dispatch)
       },
     })
   }
@@ -173,6 +157,7 @@ const ListSong = () => {
                           name: listSong[index].name,
                           image: listSong[index].image,
                           audio: listSong[index].audio,
+                          duration: listSong[index].duration,
                           track_number: index,
                         }
                         setEditValue(currentTrack)
@@ -271,7 +256,11 @@ const ListSong = () => {
                                 if (e.target.files[0]) {
                                   getBlobDuration(e.target.files[0]).then(
                                     function (duration) {
-                                      dispatch(getDuration(e.target.files[0]))
+                                      dispatch(getDuration(duration))
+                                      setEditValue({
+                                        ...editValue,
+                                        duration: duration,
+                                      })
                                     },
                                   )
                                   getBase64(e.target.files[0], (url) => {
