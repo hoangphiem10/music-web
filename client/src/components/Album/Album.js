@@ -63,7 +63,6 @@ const Album = () => {
                 span={6}
                 onClick={() => {
                   dispatch(getAlbumName(album.albumName))
-                  console.log(album.albumName)
                 }}
               >
                 <Card

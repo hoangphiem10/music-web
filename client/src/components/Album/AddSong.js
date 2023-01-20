@@ -2,11 +2,11 @@ import { Button, Form, Input, message, Modal, Space, Upload } from 'antd'
 import React, { useState, useEffect } from 'react'
 import { PlusOutlined, LoadingOutlined } from '@ant-design/icons'
 import '../../assets/scss/addsong.scss'
-import axios from '../../api'
 import { useParams } from 'react-router-dom'
 import getBlobDuration from 'get-blob-duration'
 import { useDispatch } from 'react-redux'
-import { getDuration } from '../../redux/songSlice'
+
+import musicService from '../../services/musicService'
 
 const AddSong = () => {
   const { id } = useParams()
@@ -42,16 +42,9 @@ const AddSong = () => {
   }
   const handleOk = () => {
     setIsModalOpen(false)
-    axios
-      .post('listSongs/createSong/' + id, {
-        image: imageSong,
-        name: nameSong,
-        audio: audio,
-        duration: duration,
-      })
-      .then((res) => console.log(res))
-      .catch((err) => console.log(err))
-    window.location.reload()
+    musicService.addSong(id, imageSong, nameSong, audio, duration, dispatch)
+    setImageSong('')
+    form.resetFields()
   }
 
   const handleCancel = () => {
@@ -118,6 +111,7 @@ const AddSong = () => {
                   style={{
                     width: '100%',
                     height: '100%',
+                    objectFit: 'cover',
                   }}
                 />
               ) : (
@@ -143,7 +137,6 @@ const AddSong = () => {
                 />
               </Form.Item>
 
-              {/* <Form.Item name="song"> */}
               <input
                 type="file"
                 name="audio"

@@ -48,13 +48,15 @@ class ListSongsController {
                     'albumListSongs.$.image': req.body.image,
                     'albumListSongs.$.name': req.body.name,
                     'albumListSongs.$.audio': req.body.audio,
+                    'albumListSongs.$.duration': req.body.duration,
+
                     // 'albumListSongs.$.artist': req.body.artist,
                     // 'albumListSongs.$.albumName': req.body.albumName,
                 },
             },
         )
-            .then(() => {
-                res.status(200).send('updated successfully')
+            .then((album) => {
+                res.status(200).send(album.albumListSongs)
             })
             .catch((error) => {
                 res.status(500).send({ message: error })
@@ -75,8 +77,8 @@ class ListSongsController {
                 },
             },
         )
-            .then((song) => {
-                res.status(200).json('Deleted successfully!')
+            .then((album) => {
+                res.status(200).send(album.albumListSongs)
             })
             .catch((err) => {
                 console.log(err)

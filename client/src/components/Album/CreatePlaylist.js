@@ -1,11 +1,9 @@
 import React, { useState } from 'react'
 import { Form, Input, message, Modal, Upload } from 'antd'
-import Logout from '../Logout'
 import { LoadingOutlined, PlusOutlined } from '@ant-design/icons'
-import axios from '../../api'
 import '../../assets/scss/playlist.scss'
 import { useNavigate } from 'react-router-dom'
-
+import musicService from '../../services/musicService'
 const Playlist = () => {
   const { TextArea } = Input
   const navigate = useNavigate()
@@ -41,17 +39,7 @@ const Playlist = () => {
 
   const handleOk = async () => {
     setIsModalOpen(false)
-    try {
-      const res = await axios.post('albums/createAlbums', {
-        background: albumImage,
-        albumName: albumName,
-        albumDescription: albumDesc,
-      })
-      navigate('/my-playlist/' + res.data.album._id)
-      window.location.reload()
-    } catch (e) {
-      console.log(e)
-    }
+    musicService.createAlbum(albumImage, albumName, albumDesc, navigate)
   }
   const handleCancel = () => {
     setIsModalOpen(false)
@@ -178,7 +166,6 @@ const Playlist = () => {
           </div>
         </div>
       </Modal>
-      {/* <ListSong /> */}
 
       <div className="body__contents"></div>
     </div>
