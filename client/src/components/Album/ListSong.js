@@ -15,13 +15,12 @@ import musicService from '../../services/musicService'
 const ListSong = () => {
   const { id } = useParams()
   const dispatch = useDispatch()
-  let listSong = useSelector((state) => state.song.listsong.songs)
   const albumName = useSelector((state) => state.song.albumName)
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [loading, setLoading] = useState(false)
   const [track_number, setTrackNumber] = useState(null)
-  console.log(listSong)
   const [form] = Form.useForm()
+  let listSong = useSelector((state) => state.song.listsong.songs)
   let [editValue, setEditValue] = useState({
     name: '',
     image: '',
@@ -29,6 +28,7 @@ const ListSong = () => {
     duration: 0,
     track_number: '',
   })
+
   useEffect(() => {
     musicService.getAllSongs(id, dispatch)
   }, [dispatch, id])
@@ -120,7 +120,7 @@ const ListSong = () => {
     return minutes + ':' + (seconds < 10 ? '0' : '') + seconds
   }
   return (
-    <>
+    <div>
       <AddSong />
       <div className="Container-listsong">
         {listSong && (
@@ -280,7 +280,7 @@ const ListSong = () => {
           </div>
         )}
       </div>
-    </>
+    </div>
   )
 }
 

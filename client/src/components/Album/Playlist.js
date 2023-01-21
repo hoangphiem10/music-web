@@ -6,9 +6,9 @@ import axios from '../../api'
 import '../../assets/scss/playlist.scss'
 import ListSong from './ListSong'
 import { useParams } from 'react-router-dom'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { getAlbumName } from '../../redux/songSlice'
-import musicService from '../../services/musicService'
+import SearchBar from './SearchBar'
 const Playlist = () => {
   const { TextArea } = Input
   const { id } = useParams()
@@ -18,6 +18,7 @@ const Playlist = () => {
     albumName: '',
     albumDescription: '',
   })
+  let listSong = useSelector((state) => state.song.listsong.songs)
 
   const [loading, setLoading] = useState(false)
   const [isModalOpen, setIsModalOpen] = useState(false)
@@ -109,7 +110,7 @@ const Playlist = () => {
   return (
     <div className="playlist-container">
       <div className="navbar-Container">
-        <div className=""></div>
+        <SearchBar />
         <Logout />
       </div>
       <div className="playlist" onClick={showModal}>
