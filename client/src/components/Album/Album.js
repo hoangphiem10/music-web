@@ -13,7 +13,7 @@ import { getAlbumName } from '../../redux/songSlice'
 const { Meta } = Card
 const Album = () => {
   const navigate = useNavigate()
-  const [listAlbum, setListAlbum] = useState(null)
+  const [listAlbum, setListAlbum] = useState([])
   const [search, setSearch] = useState('')
   const dispatch = useDispatch()
   useEffect(() => {
@@ -58,7 +58,7 @@ const Album = () => {
       </div>
 
       <div className="body__contents" style={{ paddingLeft: '2.5em' }}>
-        {listAlbum ? (
+        {listAlbum.length !== 0 ? (
           <Row gutter={[16, 32]}>
             {listAlbum.map((album) => (
               <Col

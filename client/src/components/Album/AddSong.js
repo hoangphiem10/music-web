@@ -1,5 +1,5 @@
 import { Button, Form, Input, message, Modal, Space, Upload } from 'antd'
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import { PlusOutlined, LoadingOutlined } from '@ant-design/icons'
 import '../../assets/scss/addsong.scss'
 import { useParams } from 'react-router-dom'
@@ -10,7 +10,6 @@ import musicService from '../../services/musicService'
 
 const AddSong = () => {
   const { id } = useParams()
-  const { TextArea } = Input
   const [imageSong, setImageSong] = useState('')
   const [loading, setLoading] = useState(false)
   const [isModalOpen, setIsModalOpen] = useState(false)

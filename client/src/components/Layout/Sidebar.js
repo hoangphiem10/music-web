@@ -14,18 +14,27 @@ import { Popconfirm } from 'antd'
 const Sidebar = () => {
   const navigate = useNavigate()
   const [playlist, setPlaylist] = useState(null)
-  // useEffect(() => {
-  //   axios.get('albums/getAllAlbums').then((res) => {
-  //     setPlaylist(res.data.albums)
-  //   })
-  //   console.log(playlist)
-  // }, [])
-  // const deleteAlbum = async (id) => {
-
-  //   await axios.delete(`albums/deleteAlbum/${id}`).then((res) => {
-  //     console.log(res)
-  //   })
-  // }
+  useEffect(() => {
+    axios.get('albums/getAllAlbums').then((res) => {
+      setPlaylist(res.data.albums)
+    })
+    console.log(playlist)
+  }, [])
+  const deleteAlbum = async (id) => {
+    await axios
+      .delete(`albums/deleteAlbum/${id}`)
+      .then((res) => {
+        const listAlbum = playlist.filter((album) => album._id !== id)
+        setPlaylist(listAlbum)
+        console.log(listAlbum)
+        if (listAlbum.length !== 0) {
+          navigate(`/my-playlist/${listAlbum[0]._id}`)
+        } else {
+          navigate('/')
+        }
+      })
+      .catch((err) => console.log(err))
+  }
   return (
     <div className="sidbar-Container">
       <div className="top__links">
@@ -55,7 +64,7 @@ const Sidebar = () => {
           </li>
         </ul>
       </div>
-      {/* <div className="playlist-sidebar">
+      <div className="playlist-sidebar">
         <ul>
           {playlist?.map((album) => {
             return (
@@ -66,16 +75,22 @@ const Sidebar = () => {
                 }}
               >
                 {album.albumName}
-
-                <DeleteOutlined
-                  onClick={deleteAlbum(album._id)}
-                  style={{ color: 'red', fontSize: '14px' }}
-                />
+                <Popconfirm
+                  title="Are you sure you want to logout?"
+                  okText="Yes"
+                  cancelText="No"
+                  onConfirm={(e) => {
+                    e.stopPropagation()
+                    deleteAlbum(album._id)
+                  }}
+                >
+                  <DeleteOutlined style={{ color: 'red', fontSize: '14px' }} />
+                </Popconfirm>
               </li>
             )
           })}
         </ul>
-      </div> */}
+      </div>
     </div>
   )
 }
