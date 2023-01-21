@@ -82,9 +82,9 @@ const Playlist = () => {
     axios.get('albums/getAnAlbum/' + id).then((res) => {
       // setAlbum(res.data.album)
       setEditValue(res.data.album)
-      setAlbumImage(res.data.album.background[0])
+      setAlbumImage(res.data.album?.background[0])
     })
-  }, [])
+  }, [id])
 
   useEffect(() => {
     if (form.__INTERNAL__.name) {
