@@ -1,7 +1,7 @@
 import React from 'react'
 import { UserOutlined } from '@ant-design/icons'
 import '../assets/scss/logout.scss'
-import { Popconfirm } from 'antd'
+import { Popconfirm, Space } from 'antd'
 import { useNavigate } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import authService from '../services/authService'
@@ -25,10 +25,10 @@ const Logout = () => {
         cancelText="No"
         onConfirm={handleLogout}
       >
-        <a href="/login">
+        <Space className="logout">
           <UserOutlined />
           <span>{user?.username}</span>
-        </a>
+        </Space>
       </Popconfirm>
     </div>
   )

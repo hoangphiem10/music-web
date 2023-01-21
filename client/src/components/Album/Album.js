@@ -23,10 +23,13 @@ const Album = () => {
         setListAlbum(
           Albums.filter(
             (album) =>
-              album.albumName.toLowerCase().includes(search) ||
-              album.albumDescription.toLowerCase().includes(search),
+              album.albumName.toLowerCase().includes(search.toLowerCase()) ||
+              album.albumDescription
+                .toLowerCase()
+                .includes(search.toLowerCase()),
           ),
         )
+        console.log(search)
       } else {
         setListAlbum(res.data.albums)
       }

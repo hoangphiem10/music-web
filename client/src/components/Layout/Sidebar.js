@@ -1,12 +1,31 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import {
   HomeOutlined,
   PlusSquareOutlined,
   ContactsOutlined,
+  DeleteOutlined,
 } from '@ant-design/icons'
+import axios from '../../api'
+
 import '../../assets/scss/sidebar.scss'
+import { useNavigate } from 'react-router-dom'
+import { Popconfirm } from 'antd'
 
 const Sidebar = () => {
+  const navigate = useNavigate()
+  const [playlist, setPlaylist] = useState(null)
+  // useEffect(() => {
+  //   axios.get('albums/getAllAlbums').then((res) => {
+  //     setPlaylist(res.data.albums)
+  //   })
+  //   console.log(playlist)
+  // }, [])
+  // const deleteAlbum = async (id) => {
+
+  //   await axios.delete(`albums/deleteAlbum/${id}`).then((res) => {
+  //     console.log(res)
+  //   })
+  // }
   return (
     <div className="sidbar-Container">
       <div className="top__links">
@@ -36,6 +55,27 @@ const Sidebar = () => {
           </li>
         </ul>
       </div>
+      {/* <div className="playlist-sidebar">
+        <ul>
+          {playlist?.map((album) => {
+            return (
+              <li
+                key={album._id}
+                onClick={() => {
+                  navigate(`/my-playlist/${album._id}`)
+                }}
+              >
+                {album.albumName}
+
+                <DeleteOutlined
+                  onClick={deleteAlbum(album._id)}
+                  style={{ color: 'red', fontSize: '14px' }}
+                />
+              </li>
+            )
+          })}
+        </ul>
+      </div> */}
     </div>
   )
 }

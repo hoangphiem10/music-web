@@ -67,8 +67,8 @@ class AlbumsController {
     deleteAlbum = (req, res, next) => {
         const id = req.params.id
         Album.findByIdAndRemove(id)
-            .then(() => {
-                res.status(200).json('Deleted successfully!')
+            .then((album) => {
+                res.status(200).send({ album })
             })
             .catch((err) => {
                 console.log(err)

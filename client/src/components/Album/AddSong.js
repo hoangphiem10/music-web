@@ -80,11 +80,11 @@ const AddSong = () => {
   return (
     <Space style={{ margin: '20px 0' }} align="end">
       <Button
-        //   href="/manage-products/Add"
         onClick={showModal}
         type="primary"
         icon={<PlusOutlined />}
         size="medium"
+        style={{ backgroundColor: ' rgb(32, 87, 100)' }}
       >
         Add Song
       </Button>
