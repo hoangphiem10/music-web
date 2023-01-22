@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from 'react'
-import { Form, Input, message, Modal, Space, Upload } from 'antd'
+import { Form, Input, message, Modal, Upload } from 'antd'
 import Logout from '../Logout'
 import { LoadingOutlined, PlusOutlined } from '@ant-design/icons'
 import axios from '../../api'
 import '../../assets/scss/playlist.scss'
 import ListSong from './ListSong'
 import { useParams } from 'react-router-dom'
-import { useDispatch, useSelector } from 'react-redux'
+import { useDispatch } from 'react-redux'
 import { getAlbumName } from '../../redux/songSlice'
 import SearchBar from './SearchBar'
 const Playlist = () => {
@@ -18,7 +18,7 @@ const Playlist = () => {
     albumName: '',
     albumDescription: '',
   })
-  let listSong = useSelector((state) => state.song.listsong.songs)
+  // let listSong = useSelector((state) => state.song.listsong.songs)
 
   const [loading, setLoading] = useState(false)
   const [isModalOpen, setIsModalOpen] = useState(false)

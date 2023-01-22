@@ -7,6 +7,7 @@ import Footer from '../../components/Layout/Footer'
 const Layout = ({ component: Component }) => {
   const user = useSelector((state) => state.auth.login?.currentUser)
   const navigate = useNavigate()
+  console.log(user)
   useEffect(() => {
     if (!user) navigate('/login')
   }, [])

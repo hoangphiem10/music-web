@@ -2,7 +2,7 @@ const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
 const User = require('../models/User')
 const nodemailer = require('nodemailer')
-const jwt_decode = require('jwt-decode')
+
 let refreshTokens = []
 class AuthController {
     // [POST] /api/auth/register
@@ -85,9 +85,13 @@ class AuthController {
 
     requestRefreshToken = async (req, res) => {
         const refreshToken = req.cookies.refreshToken
+        console.log(refreshTokens, refreshToken)
         if (!refreshToken)
             return res.status(401).json('You are not authenticated')
-        if (!refreshTokens.includes(refreshToken)) {
+        if (
+            refreshTokens.length !== 0 &&
+            !refreshTokens.includes(refreshToken)
+        ) {
             return res.status(403).json('Refresh token is not valid')
         }
         jwt.verify(
@@ -149,8 +153,9 @@ class AuthController {
 
         try {
             const oldUser = await User.findOne({ email })
-            if (!oldUser) {
-                return res.json({ status: 'User Not Exists!!' })
+            console.log(oldUser)
+            if (oldUser == null) {
+                return res.status(404).json({ message: 'User Not Exists!!' })
             }
             const token = jwt.sign(
                 { email: oldUser.email, id: oldUser._id },
@@ -197,30 +202,19 @@ class AuthController {
         const { password } = req.body
         const oldUser = await User.findOne({ _id: id })
         if (!oldUser) {
-            return res.json({ status: "User's not exist" })
+            return res.status(404).json({ message: "User's not exist" })
         }
         try {
-            const decodedToken = jwt_decode(token)
-            console.log(Date.now() / 1000, decodedToken.exp)
-            if (decodedToken.exp * 1000 > new Date().getTime()) {
-                jwt.verify(
-                    token,
-                    process.env.ACCESS_SECRET_KEY,
-                    (err, user) => {
-                        if (err) {
-                            res.status(403).json('Token is not valid!')
-                            return
-                        }
-                    },
-                )
-                const salt = await bcrypt.genSalt(10)
-                const hashed = await bcrypt.hash(req.body.password, salt)
-                await User.updateOne({ _id: id }, { password: hashed })
-                res.status(200).json('password updated')
-            } else {
-                res.status(403).json('Token has expired!')
-                return
-            }
+            jwt.verify(token, process.env.ACCESS_SECRET_KEY, (err, user) => {
+                if (err) {
+                    res.status(403).json('Token is not valid!')
+                    return
+                }
+            })
+            const salt = await bcrypt.genSalt(10)
+            const hashed = await bcrypt.hash(req.body.password, salt)
+            await User.updateOne({ _id: id }, { password: hashed })
+            res.status(200).json('password updated')
         } catch (err) {
             console.log(err)
             res.status(500).json({ status: 'something went wrong' })
