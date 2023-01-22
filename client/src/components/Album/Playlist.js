@@ -49,14 +49,18 @@ const Playlist = () => {
   const handleOk = async () => {
     setIsModalOpen(false)
     try {
-      await axios.put('albums/updateAlbum/' + id, {
-        background: albumImage,
-        albumName: editValue.albumName,
-        albumDescription: editValue.albumDescription,
-      })
-      dispatch(getAlbumName(editValue.albumName))
-
-      // console.log(res)
+      await axios
+        .put('albums/updateAlbum/' + id, {
+          background: albumImage,
+          albumName: editValue.albumName,
+          albumDescription: editValue.albumDescription,
+        })
+        .then(() => dispatch(getAlbumName(editValue.albumName)))
+        .catch((err) => {
+          if (err.response.status === 401) {
+            message.error('You are not authorized to do that')
+          }
+        })
     } catch (e) {
       console.log(e)
     }
