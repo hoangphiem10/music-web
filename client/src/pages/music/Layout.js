@@ -15,12 +15,7 @@ const Layout = ({ component: Component }) => {
     <div className="Container">
       <div className="spotify__body">
         <Sidebar />
-        {/* <div className="body">
-          <Navbar />
-          <div className="body__contents"> */}
         <Component />
-        {/* </div>
-        </div> */}
       </div>
       <div className="spotify__footer">
         <Footer />

@@ -36,12 +36,12 @@ const Contact = () => {
   }
   return (
     <div className="body">
-      <div className="navbar-Container">
+      <div className="navbar-Container" style={{ padding: '2em' }}>
         <div></div>
         <Logout />
       </div>
-      <div className="body__contents">
-        <Card style={{ margin: '20px 200px ' }}>
+      <div className="body__contents contact-form ">
+        <Card style={{ margin: '20px 10em ' }}>
           <Title
             style={{
               textAlign: 'center',
@@ -58,10 +58,11 @@ const Contact = () => {
             className="login-form"
             initialValues={{ remember: true }}
             onFinish={onFinish}
+            // style={{padding:'20px'}}
           >
             <Form.Item name="username">
               <Row>
-                <Col sm={{ offset: 1, span: 10 }}>
+                <Col sm={{ span: 12 }} xs={24}>
                   <Form.Item
                     name="firstname"
                     rules={[
@@ -82,7 +83,7 @@ const Contact = () => {
                     />
                   </Form.Item>
                 </Col>
-                <Col sm={{ offset: 1, span: 10 }}>
+                <Col sm={{ offset: 1, span: 11 }} xs={24}>
                   <Form.Item
                     name="lastname"
                     rules={[
@@ -107,8 +108,9 @@ const Contact = () => {
 
             <Form.Item
               rules={[{ required: true, message: 'Please input your email!' }]}
-              wrapperCol={{ offset: 1, span: 21 }}
+              lg={{ span: 24 }}
               name="email"
+              style={{ marginTop: '-2em' }}
             >
               <Input
                 minLength={6}
@@ -124,7 +126,7 @@ const Contact = () => {
               rules={[
                 { required: true, message: 'Please input your message!' },
               ]}
-              wrapperCol={{ offset: 1, span: 21 }}
+              wrapperCol={{ span: 24 }}
               name="message"
             >
               <TextArea
@@ -136,7 +138,7 @@ const Contact = () => {
                 value={message}
               />
             </Form.Item>
-            <Form.Item wrapperCol={{ offset: 9, span: 5 }}>
+            <Form.Item xs={{ offset: 0 }}>
               <Button
                 style={{
                   width: '100%',
