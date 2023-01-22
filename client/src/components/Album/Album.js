@@ -20,16 +20,15 @@ const Album = () => {
     axios.get('albums/getAllAlbums').then((res) => {
       if (search) {
         const Albums = res.data.albums
-        setListAlbum(
-          Albums.filter(
-            (album) =>
-              album.albumName.toLowerCase().includes(search.toLowerCase()) ||
-              album.albumDescription
-                .toLowerCase()
-                .includes(search.toLowerCase()),
-          ),
+        const l = Albums.filter(
+          (album) =>
+            album.albumName?.toLowerCase().includes(search.toLowerCase()) ||
+            album.albumDescription
+              ?.toLowerCase()
+              .includes(search.toLowerCase()),
         )
-        console.log(search)
+        setListAlbum(l)
+        console.log(l)
       } else {
         setListAlbum(res.data.albums)
       }
@@ -57,13 +56,15 @@ const Album = () => {
         </div>
       </div>
 
-      <div className="body__contents" style={{ paddingLeft: '2.5em' }}>
+      <div className="body__contents" style={{ padding: '2rem' }}>
         {listAlbum.length !== 0 ? (
-          <Row gutter={[16, 32]}>
+          <Row gutter={[32, 16]}>
             {listAlbum.map((album) => (
               <Col
                 key={album._id}
-                span={6}
+                xs={24}
+                sm={12}
+                lg={6}
                 onClick={() => {
                   dispatch(getAlbumName(album.albumName))
                 }}

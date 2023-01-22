@@ -4,11 +4,9 @@ import AddSong from './AddSong'
 import '../../assets/scss/listsong.scss'
 import { PlusOutlined, LoadingOutlined } from '@ant-design/icons'
 import getBlobDuration from 'get-blob-duration'
-import Logout from '../Logout'
 import { useParams } from 'react-router-dom'
-import axios from '../../api'
 import { useDispatch, useSelector } from 'react-redux'
-import { getDuration, getListSongs, getSongById } from '../../redux/songSlice'
+import { getDuration, getSongById } from '../../redux/songSlice'
 import { DeleteOutlined, EditOutlined } from '@ant-design/icons'
 import { Form, Input, message, Modal, Space, Upload } from 'antd'
 import musicService from '../../services/musicService'
@@ -149,9 +147,9 @@ const ListSong = () => {
                 return (
                   <>
                     <div
-                      className="row"
+                      className={`row ${index === track_number && 'activeRow'}`}
                       key={index}
-                      onClick={() => {
+                      onClick={(e) => {
                         setTrackNumber(index)
                         const currentTrack = {
                           name: listSong[index].name,
