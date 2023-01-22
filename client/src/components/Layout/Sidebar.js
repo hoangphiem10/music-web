@@ -18,7 +18,6 @@ const Sidebar = () => {
     axios.get('albums/getAllAlbums').then((res) => {
       setPlaylist(res.data.albums)
     })
-    console.log(playlist)
   }, [])
   const deleteAlbum = async (id) => {
     await axios

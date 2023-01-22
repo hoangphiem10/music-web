@@ -1,11 +1,11 @@
 import React from 'react'
 import { Carousel } from 'antd'
-// import login1 from '../../assets/Images/login1.jpg'
+import login1 from '../../assets/Images/NY.jpeg'
 // import login2 from '../../assets/Images/login2.jpeg'
 // import login3 from '../../assets/Images/login3.gif'
 // import login4 from '../../assets/Images/login4.jpeg'
 // const images = [login3, login1, login4]
-const images = []
+const images = [login1]
 
 const AuthSlider = () => {
   return (

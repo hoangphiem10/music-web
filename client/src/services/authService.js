@@ -5,6 +5,7 @@ import {
   loginSuccess,
   logoutError,
   logoutStart,
+  logoutSuccess,
   registerFailed,
   registerStart,
   registerSuccess,
@@ -70,9 +71,8 @@ const logout = async (dispatch, id, navigate, accessToken, axiosJWT) => {
     await axiosJWT.post('auth/logout', id, {
       headers: { token: `Bearer ${accessToken}` },
     })
-    dispatch(loginSuccess())
+    dispatch(logoutSuccess())
     navigate('/login')
-    window.location.reload()
   } catch (err) {
     dispatch(logoutError())
   }
@@ -90,17 +90,13 @@ const refreshToken = async () => {
 const createAxios = (user, dispatch, stateSuccess) => {
   newInstance.interceptors.request.use(
     async (config) => {
-      let date = new Date()
-      const decodedToken = jwt_decode(user?.accessToken)
-      if (decodedToken.exp < date.getTime() / 1000) {
-        const data = await refreshToken()
-        const refreshUser = {
-          ...user,
-          accessToken: data.accessToken,
-        }
-        dispatch(stateSuccess(refreshUser))
-        config.headers['token'] = 'Bearer ' + data.accessToken
+      const data = await refreshToken()
+      const refreshUser = {
+        ...user,
+        accessToken: data.accessToken,
       }
+      dispatch(stateSuccess(refreshUser))
+      config.headers['token'] = 'Bearer ' + data.accessToken
       return config
     },
     (err) => {
@@ -110,16 +106,28 @@ const createAxios = (user, dispatch, stateSuccess) => {
   return newInstance
 }
 
-const forgotPassword = async (value) => {
-  try {
-    console.log(value)
-    const res = await axios.post('auth/forgot-password', {
+const forgotPassword = async (value, navigate) => {
+  console.log(value)
+  await axios
+    .post('auth/forgot-password', {
       email: value.email,
     })
-    return res
-  } catch (err) {
-    console.log(err)
-  }
+    .then((res) => {
+      Modal.success({
+        title:
+          'Your Password code has been sent to your email,and it will expire in 2 miunites after you receive it',
+        onOk() {
+          navigate('/login')
+        },
+      })
+    })
+    .catch((err) => {
+      Modal.error({
+        title: 'This account does not exist ',
+        onOk() {},
+      })
+      console.log(err)
+    })
 }
 const resetPassword = async (password, id, token, navigate) => {
   try {
@@ -130,7 +138,6 @@ const resetPassword = async (password, id, token, navigate) => {
       title: 'Updated password successfully',
       onOk() {
         navigate('/login')
-        window.location.reload()
         return res
       },
     })
