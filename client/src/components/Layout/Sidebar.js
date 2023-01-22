@@ -9,7 +9,7 @@ import axios from '../../api'
 
 import '../../assets/scss/sidebar.scss'
 import { useNavigate } from 'react-router-dom'
-import { Popconfirm } from 'antd'
+import { message, Popconfirm } from 'antd'
 
 const Sidebar = () => {
   const navigate = useNavigate()
@@ -32,7 +32,12 @@ const Sidebar = () => {
           navigate('/')
         }
       })
-      .catch((err) => console.log(err))
+      .catch((err) => {
+        if (err.response.status === 401) {
+          message.error('You are not authorized to do that')
+        }
+        console.log(err.response)
+      })
   }
   return (
     <div className="sidbar-Container">

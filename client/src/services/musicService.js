@@ -1,3 +1,4 @@
+import { message } from 'antd'
 import axios from '../api'
 import { getListSongs, getSongById } from '../redux/songSlice'
 
@@ -36,7 +37,12 @@ const updateSong = async (
         })
         dispatch(getListSongs(listSong))
       })
-      .catch((err) => console.log(err))
+      .catch((err) => {
+        if (err.response.status === 401) {
+          message.error('You are not authorized to do that')
+        }
+        console.log(err)
+      })
   } catch (err) {
     console.log(err)
   }
@@ -52,7 +58,12 @@ const deleteSong = async (albumId, songId, dispatch) => {
       dispatch(getListSongs(listSong))
       dispatch(getSongById(listSong[0]))
     })
-    .catch((err) => console.log(err))
+    .catch((err) => {
+      if (err.response.status === 401) {
+        message.error('You are not authorized to do that')
+      }
+      console.log(err)
+    })
 }
 
 const addSong = async (id, imageSong, nameSong, audio, duration, dispatch) => {
@@ -66,7 +77,12 @@ const addSong = async (id, imageSong, nameSong, audio, duration, dispatch) => {
     .then((res) => {
       dispatch(getListSongs(res.data))
     })
-    .catch((err) => console.log(err))
+    .catch((err) => {
+      if (err.response.status === 401) {
+        message.error('You are not authorized to do that')
+      }
+      console.log(err)
+    })
 }
 
 const getAllSongs = async (id, dispatch) => {
@@ -91,6 +107,9 @@ const createAlbum = async (albumImage, albumName, albumDesc, navigate) => {
       navigate('/my-playlist/' + res.data.album._id)
     })
     .catch((err) => {
+      if (err.response.status === 401) {
+        message.error('You are not authorized to do that')
+      }
       console.log(err)
     })
 }

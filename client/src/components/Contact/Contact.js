@@ -26,7 +26,7 @@ const Contact = () => {
         Modal.success({
           title: "Your message has been sent to Phu Ty's email",
           onOk() {
-            window.location.reload('/')
+            form.resetFields()
           },
         })
       })
@@ -41,7 +41,12 @@ const Contact = () => {
         <Logout />
       </div>
       <div className="body__contents contact-form ">
-        <Card style={{ margin: '20px 10em ' }}>
+        <Card
+          style={{
+            margin: '20px 10em ',
+            backgroundColor: 'rgba(243 ,244,246,0.8)',
+          }}
+        >
           <Title
             style={{
               textAlign: 'center',

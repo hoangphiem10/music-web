@@ -46,7 +46,6 @@ const register = async (user, dispatch, navigate) => {
       content: 'Register successfully ^^',
       onOk() {
         navigate('/login')
-        window.location.reload()
       },
     })
   } catch (err) {
@@ -146,7 +145,6 @@ const resetPassword = async (password, id, token, navigate) => {
       title: 'Your password code has expired!Send email request again ^^ ',
       onOk() {
         navigate('/forgot-password')
-        window.location.reload()
       },
     })
     console.log(err)
