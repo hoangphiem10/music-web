@@ -10,18 +10,32 @@ import axios from '../../api'
 import '../../assets/scss/sidebar.scss'
 import { useNavigate } from 'react-router-dom'
 import { message, Popconfirm } from 'antd'
+import { useDispatch, useSelector } from 'react-redux'
+import { loginSuccess } from '../../redux/authSlice'
+import authService from '../../services/authService'
 
 const Sidebar = () => {
+  const dispatch = useDispatch()
   const navigate = useNavigate()
+  const user = useSelector((state) => state.auth.login.currentUser)
+  const accessToken = user?.accessToken ? user?.accessToken : null
+  let axiosJWT = authService.createAxios(user, dispatch, loginSuccess, navigate)
+  // console.log(axiosJWT)
   const [playlist, setPlaylist] = useState(null)
   useEffect(() => {
-    axios.get('albums/getAllAlbums').then((res) => {
-      setPlaylist(res.data.albums)
-    })
+    axios
+      .get('albums/getAllAlbums', {
+        // headers: { token: `Bearer ${accessToken}` },
+      })
+      .then((res) => {
+        setPlaylist(res.data.albums)
+      })
   }, [])
   const deleteAlbum = async (id) => {
-    await axios
-      .delete(`albums/deleteAlbum/${id}`)
+    await axiosJWT
+      .delete(`albums/deleteAlbum/${id}`, {
+        headers: { token: `Bearer ${accessToken}` },
+      })
       .then((res) => {
         const listAlbum = playlist.filter((album) => album._id !== id)
         setPlaylist(listAlbum)
@@ -33,8 +47,8 @@ const Sidebar = () => {
         }
       })
       .catch((err) => {
-        if (err.response.status === 401) {
-          message.error('You are not authorized to do that')
+        if (!user.isAdmin) {
+          message.error('You are not authorized to do delete Album')
         }
         console.log(err.response)
       })

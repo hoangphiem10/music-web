@@ -5,14 +5,20 @@ import { LoadingOutlined, PlusOutlined } from '@ant-design/icons'
 import axios from '../../api'
 import '../../assets/scss/playlist.scss'
 import ListSong from './ListSong'
-import { useParams } from 'react-router-dom'
-import { useDispatch } from 'react-redux'
+import { useNavigate, useParams } from 'react-router-dom'
+import { useDispatch, useSelector } from 'react-redux'
 import { getAlbumName } from '../../redux/songSlice'
 import SearchBar from './SearchBar'
+import authService from '../../services/authService'
+import { loginSuccess } from '../../redux/authSlice'
 const Playlist = () => {
+  const dispatch = useDispatch()
+  const navigate = useNavigate()
+  const user = useSelector((state) => state.auth.login.currentUser)
+  const accessToken = user?.accessToken ? user?.accessToken : null
+  let axiosJWT = authService.createAxios(user, dispatch, loginSuccess, navigate)
   const { TextArea } = Input
   const { id } = useParams()
-  const dispatch = useDispatch()
   const [albumImage, setAlbumImage] = useState(null)
   let [editValue, setEditValue] = useState({
     albumName: '',
@@ -49,16 +55,20 @@ const Playlist = () => {
   const handleOk = async () => {
     setIsModalOpen(false)
     try {
-      await axios
-        .put('albums/updateAlbum/' + id, {
-          background: albumImage,
-          albumName: editValue.albumName,
-          albumDescription: editValue.albumDescription,
-        })
+      await axiosJWT
+        .put(
+          'albums/updateAlbum/' + id,
+          {
+            background: albumImage,
+            albumName: editValue.albumName,
+            albumDescription: editValue.albumDescription,
+          },
+          { headers: { token: `Bearer ${accessToken}` } },
+        )
         .then(() => dispatch(getAlbumName(editValue.albumName)))
         .catch((err) => {
-          if (err.response.status === 401) {
-            message.error('You are not authorized to do that')
+          if (!user.isAdmin) {
+            message.error('You are not authorized to edit Album')
           }
         })
     } catch (e) {

@@ -12,7 +12,7 @@ import {
 } from '../redux/authSlice'
 import { message, Modal } from 'antd'
 import jwt_decode from 'jwt-decode'
-
+// import dayjs from 'dayjs'
 const login = async (user, dispatch, navigate) => {
   dispatch(loginStart())
   try {
@@ -67,16 +67,26 @@ const register = async (user, dispatch, navigate) => {
 const logout = async (dispatch, id, navigate, accessToken, axiosJWT) => {
   dispatch(logoutStart())
   try {
-    await axiosJWT.post('auth/logout', id, {
-      headers: { token: `Bearer ${accessToken}` },
-    })
-    dispatch(logoutSuccess())
-    navigate('/login')
+    await axiosJWT
+      .post('auth/logout', id, {
+        headers: { token: `Bearer ${accessToken}` },
+      })
+      .then((res) => {
+        console.log(res)
+        dispatch(logoutSuccess())
+        navigate('/login')
+        window.location.reload()
+      })
+      .catch((err) => {
+        console.log(err)
+        dispatch(logoutError())
+      })
   } catch (err) {
     dispatch(logoutError())
   }
 }
-const refreshToken = async () => {
+const refreshToken = async (navigate) => {
+  console.log('refresh')
   try {
     const res = await axios.post('auth/refreshToken', {
       withCredentials: true,
@@ -86,17 +96,25 @@ const refreshToken = async () => {
     console.log(err)
   }
 }
-const createAxios = (user, dispatch, stateSuccess) => {
+
+const createAxios = (user, dispatch, stateSuccess, navigate) => {
   newInstance.interceptors.request.use(
     async (config) => {
-      const data = await refreshToken()
-      const refreshUser = {
-        ...user,
-        accessToken: data.accessToken,
+      let date = new Date()
+      const decoded = jwt_decode(user?.accessToken)
+      if (decoded.exp * 1000 - date.getTime() <= 30000) {
+        const data = await refreshToken(navigate)
+
+        const refreshUser = {
+          ...user,
+          accessToken: data?.accessToken,
+        }
+        dispatch(loginSuccess(refreshUser))
+        console.log('hihi')
+
+        config.headers['token'] = 'Bearer ' + data.accessToken
+        return config
       }
-      dispatch(stateSuccess(refreshUser))
-      config.headers['token'] = 'Bearer ' + data.accessToken
-      return config
     },
     (err) => {
       return Promise.reject(err)

@@ -4,7 +4,16 @@ import '../../assets/scss/layout.scss'
 import Navbar from '../Layout/Navbar'
 import Logout from '../Logout'
 import axios from '../../api'
+import { useDispatch, useSelector } from 'react-redux'
+import { loginSuccess } from '../../redux/authSlice'
+import authService from '../../services/authService'
+import { useNavigate } from 'react-router-dom'
 const Contact = () => {
+  const dispatch = useDispatch()
+  const navigate = useNavigate()
+  const user = useSelector((state) => state.auth.login.currentUser)
+  const accessToken = user?.accessToken ? user?.accessToken : null
+  let axiosJWT = authService.createAxios(user, dispatch, loginSuccess, navigate)
   const { TextArea } = Input
   const { Title } = Typography
   const [form] = Form.useForm()
@@ -14,13 +23,19 @@ const Contact = () => {
   const [message, setMessage] = useState('')
 
   const onFinish = async (values) => {
-    await axios
-      .post('contact/createContact', {
-        firstname: values.firstname,
-        lastname: values.lastname,
-        email: values.email,
-        message: values.message,
-      })
+    await axiosJWT
+      .post(
+        'contact/createContact',
+        {
+          firstname: values.firstname,
+          lastname: values.lastname,
+          email: values.email,
+          message: values.message,
+        },
+        {
+          headers: { token: `Bearer ${accessToken}` },
+        },
+      )
       .then((res) => {
         console.log(res)
         Modal.success({

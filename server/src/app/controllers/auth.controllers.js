@@ -85,7 +85,7 @@ class AuthController {
 
     requestRefreshToken = async (req, res) => {
         const refreshToken = req.cookies.refreshToken
-        console.log(refreshTokens, refreshToken)
+
         if (!refreshToken)
             return res.status(401).json('You are not authenticated')
         if (

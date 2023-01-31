@@ -1,8 +1,26 @@
+import React, { useState, useEffect } from 'react'
 import { Route, BrowserRouter, Routes, Outlet } from 'react-router-dom'
 import { Forgot, Login, Register, Reset } from './pages/auth'
 import { Home, ContactPage, Album, MyPlaylist } from './pages/music'
 
 function App() {
+  const [isLoading, setLoading] = useState(true)
+  function someRequest() {
+    //Simulates a request; makes a "promise" that'll run for 1.5 seconds
+    return new Promise((resolve) => setTimeout(() => resolve(), 1500))
+  }
+  useEffect(() => {
+    someRequest().then(() => {
+      const loaderElement = document.querySelector('.loader-container')
+      if (loaderElement) {
+        loaderElement.remove()
+        setLoading(!isLoading)
+      }
+    })
+  })
+  if (isLoading) {
+    return null
+  }
   return (
     <BrowserRouter>
       <Routes>

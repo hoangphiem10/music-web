@@ -8,11 +8,7 @@ router.post(
     AuthMiddleware.verifyTokenAndAdminAuthorization,
     AlbumsController.createAlbums,
 )
-router.post(
-    '/createImageAlbum',
-    AuthMiddleware.verifyTokenAndAdminAuthorization,
-    AlbumsController.createImageAlbum,
-)
+router.post('/createImageAlbum', AlbumsController.createImageAlbum)
 router.put(
     '/updateAlbum/:id',
     AuthMiddleware.verifyTokenAndAdminAuthorization,
