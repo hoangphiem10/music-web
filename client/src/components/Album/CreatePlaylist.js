@@ -4,10 +4,16 @@ import { LoadingOutlined, PlusOutlined } from '@ant-design/icons'
 import '../../assets/scss/playlist.scss'
 import { useNavigate } from 'react-router-dom'
 import musicService from '../../services/musicService'
+import { useDispatch, useSelector } from 'react-redux'
+import authService from '../../services/authService'
+import { loginSuccess } from '../../redux/authSlice'
 const Playlist = () => {
   const { TextArea } = Input
   const navigate = useNavigate()
-
+  const dispatch = useDispatch()
+  const user = useSelector((state) => state.auth.login.currentUser)
+  const accessToken = user?.accessToken ? user?.accessToken : null
+  let axiosJWT = authService.createAxios(user, dispatch, loginSuccess, navigate)
   const [albumImage, setAlbumImage] = useState(null)
   const [albumName, setAlbumName] = useState(null)
   const [albumDesc, setAlbumDesc] = useState(null)
@@ -39,7 +45,14 @@ const Playlist = () => {
 
   const handleOk = async () => {
     setIsModalOpen(false)
-    musicService.createAlbum(albumImage, albumName, albumDesc, navigate)
+    musicService.createAlbum(
+      albumImage,
+      albumName,
+      albumDesc,
+      navigate,
+      user,
+      axiosJWT,
+    )
   }
   const handleCancel = () => {
     setIsModalOpen(false)

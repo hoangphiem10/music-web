@@ -13,7 +13,12 @@ const Logout = () => {
   const id = user?._id
   const dispatch = useDispatch()
   const navigate = useNavigate()
-  let axiosJWT = authService.createAxios(user, dispatch, logoutSuccess)
+  let axiosJWT = authService.createAxios(
+    user,
+    dispatch,
+    logoutSuccess,
+    navigate,
+  )
   const handleLogout = () => {
     authService.logout(dispatch, id, navigate, accessToken, axiosJWT)
   }

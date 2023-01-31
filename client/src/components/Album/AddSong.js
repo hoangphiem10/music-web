@@ -2,13 +2,20 @@ import { Button, Form, Input, message, Modal, Space, Upload } from 'antd'
 import React, { useState } from 'react'
 import { PlusOutlined, LoadingOutlined } from '@ant-design/icons'
 import '../../assets/scss/addsong.scss'
-import { useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import getBlobDuration from 'get-blob-duration'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 
 import musicService from '../../services/musicService'
+import authService from '../../services/authService'
+import { loginSuccess } from '../../redux/authSlice'
 
 const AddSong = () => {
+  const dispatch = useDispatch()
+  const navigate = useNavigate()
+  const user = useSelector((state) => state.auth.login.currentUser)
+  const accessToken = user?.accessToken ? user?.accessToken : null
+  let axiosJWT = authService.createAxios(user, dispatch, loginSuccess, navigate)
   const { id } = useParams()
   const [imageSong, setImageSong] = useState('')
   const [loading, setLoading] = useState(false)
@@ -18,7 +25,6 @@ const AddSong = () => {
   const [duration, setDuration] = useState(null)
 
   const [form] = Form.useForm()
-  const dispatch = useDispatch()
 
   const getBase64 = (img, callback) => {
     const reader = new FileReader()
@@ -41,7 +47,16 @@ const AddSong = () => {
   }
   const handleOk = () => {
     setIsModalOpen(false)
-    musicService.addSong(id, imageSong, nameSong, audio, duration, dispatch)
+    musicService.addSong(
+      id,
+      imageSong,
+      nameSong,
+      audio,
+      duration,
+      dispatch,
+      user,
+      axiosJWT,
+    )
     setImageSong('')
     form.resetFields()
   }

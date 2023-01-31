@@ -1,21 +1,24 @@
 import React, { useEffect, useState } from 'react'
 import { Empty } from 'antd'
-import axios from '../../api'
 import { SearchOutlined } from '@ant-design/icons'
 import '../../assets/scss/navbar.scss'
 import Logout from '../Logout'
 import '../../assets/scss/layout.scss'
 import { Card, Col, Row } from 'antd'
 import { useNavigate } from 'react-router-dom'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { getAlbumName } from '../../redux/songSlice'
-
+import authService from '../../services/authService'
+import { loginSuccess } from '../../redux/authSlice'
+import axios from '../../api'
 const { Meta } = Card
 const Album = () => {
+  const dispatch = useDispatch()
   const navigate = useNavigate()
+  const user = useSelector((state) => state.auth.login.currentUser)
+  let axiosJWT = authService.createAxios(user, dispatch, loginSuccess, navigate)
   const [listAlbum, setListAlbum] = useState([])
   const [search, setSearch] = useState('')
-  const dispatch = useDispatch()
   useEffect(() => {
     axios.get('albums/getAllAlbums').then((res) => {
       if (search) {

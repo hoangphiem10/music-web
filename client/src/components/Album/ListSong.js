@@ -4,15 +4,24 @@ import AddSong from './AddSong'
 import '../../assets/scss/listsong.scss'
 import { PlusOutlined, LoadingOutlined } from '@ant-design/icons'
 import getBlobDuration from 'get-blob-duration'
-import { useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { getDuration, getSongById } from '../../redux/songSlice'
 import { DeleteOutlined, EditOutlined } from '@ant-design/icons'
 import { Form, Input, message, Modal, Space, Upload } from 'antd'
 import musicService from '../../services/musicService'
+import { loginSuccess } from '../../redux/authSlice'
+import authService from '../../services/authService'
+
 const ListSong = () => {
-  const { id } = useParams()
   const dispatch = useDispatch()
+  const navigate = useNavigate()
+  const user = useSelector((state) => state.auth.login.currentUser)
+
+  const accessToken = user?.accessToken ? user?.accessToken : null
+  let axiosJWT = authService.createAxios(user, dispatch, loginSuccess, navigate)
+
+  const { id } = useParams()
   const albumName = useSelector((state) => state.song.albumName)
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [loading, setLoading] = useState(false)
@@ -28,7 +37,7 @@ const ListSong = () => {
   })
 
   useEffect(() => {
-    musicService.getAllSongs(id, dispatch)
+    musicService.getAllSongs(id, dispatch, axiosJWT)
   }, [dispatch, id])
 
   useEffect(() => {
@@ -70,6 +79,8 @@ const ListSong = () => {
       track_number,
       listSong,
       dispatch,
+      user,
+      axiosJWT,
     )
   }
 
@@ -108,7 +119,13 @@ const ListSong = () => {
     Modal.confirm({
       title: 'Are you sure,you want to delete this song?',
       onOk: () => {
-        musicService.deleteSong(id, listSong[index]._id, dispatch)
+        musicService.deleteSong(
+          id,
+          listSong[index]._id,
+          dispatch,
+          user,
+          axiosJWT,
+        )
       },
     })
   }
