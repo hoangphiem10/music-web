@@ -58,8 +58,10 @@ const Sidebar = () => {
       <div className="top__links">
         <div className="logo">
           <img
-            src="https://storage.googleapis.com/pr-newsroom-wp/1/2018/11/Spotify_Logo_RGB_White.png"
-            alt="spotify"
+            // src="https://i.pinimg.com/736x/15/3d/e7/153de74acdee27703cc7d6ad7e2009a9.jpg"
+            // src="https://i.pinimg.com/564x/bf/5e/3c/bf5e3ce432a78f1ce15db55ba5ef6903.jpg"
+            src="https://i.pinimg.com/474x/dc/a7/54/dca7548a465787dc51f00daf40718bf3.jpg"
+            alt="logo"
           />
         </div>
         <ul>

@@ -101,6 +101,10 @@ const createAxios = (user, dispatch, stateSuccess, navigate) => {
     async (config) => {
       let date = new Date()
       const decoded = jwt_decode(user?.accessToken)
+
+      console.log(decoded)
+
+      // console.log(decoded.exp, '^^', date.getTime() / 1000)
       if (decoded.exp < date.getTime() / 1000) {
         const data = await refreshToken(navigate)
 

@@ -190,7 +190,7 @@ const ListSong = () => {
                         <div className="info">
                           <span className="name">{name}</span>
                           <span style={{ fontSize: '14px', color: 'grey' }}>
-                            TikiTaka
+                            PT20
                           </span>
                         </div>
                       </div>
