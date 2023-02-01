@@ -19,7 +19,7 @@ const CurrentTrack = () => {
         <div className="track__info">
           <span className="track__info__track__name">{song.name}</span>
           <span className="track__info__track__artists">
-            atatata
+            PT20
             {/* {currentPlaying.artists.join(", ")} */}
           </span>
         </div>
