@@ -22,7 +22,7 @@ const Reset = () => {
       style={{
         backgroundImage: `url(${background})`,
         backgroundPosition: 'center',
-        backgroundSize: 'cover',
+        backgroundSize: 'contain',
       }}
     >
       <Card style={{ margin: '100px', background: 'none' }}>

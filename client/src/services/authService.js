@@ -86,7 +86,6 @@ const logout = async (dispatch, id, navigate, accessToken, axiosJWT) => {
   }
 }
 const refreshToken = async (navigate) => {
-  console.log('refresh')
   try {
     const res = await axios.post('auth/refreshToken', {
       withCredentials: true,
@@ -102,7 +101,7 @@ const createAxios = (user, dispatch, stateSuccess, navigate) => {
     async (config) => {
       let date = new Date()
       const decoded = jwt_decode(user?.accessToken)
-      if (decoded.exp * 1000 - date.getTime() <= 30000) {
+      if (decoded.exp < date.getTime() / 1000) {
         const data = await refreshToken(navigate)
 
         const refreshUser = {
