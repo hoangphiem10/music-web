@@ -94,7 +94,9 @@ const Playlist = () => {
             accept=".png,.jpeg,.jpg"
             showUploadList={false}
             onChange={handleChange}
-            action={'http://localhost:8080/api/albums/createImageAlbum'}
+            action={
+              'https://pt20s-music-4f5t.onrender.com/api/albums/createImageAlbum'
+            }
           >
             {albumImage ? (
               <img
@@ -133,7 +135,9 @@ const Playlist = () => {
               accept=".png,.jpeg,.jpg"
               showUploadList={false}
               onChange={handleChange}
-              action={'http://localhost:8080/api/albums/createImageAlbum'}
+              action={
+                'https://pt20s-music-4f5t.onrender.com/api/albums/createImageAlbum'
+              }
             >
               {albumImage ? (
                 <img
