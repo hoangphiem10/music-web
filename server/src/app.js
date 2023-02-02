@@ -14,7 +14,7 @@ app.use(
     cors({
         origin: [
             'http://localhost:3000',
-            'https://pt20-music-web.onrender.com/',
+            'https://pt20-music-web.onrender.com',
         ],
         credentials: true,
     }),

@@ -95,7 +95,7 @@ const Playlist = () => {
             showUploadList={false}
             onChange={handleChange}
             action={
-              'https://pt20s-music-4f5t.onrender.com/api/albums/createImageAlbum'
+              'https://pt20-music.onrender.com/api/albums/createImageAlbum'
             }
           >
             {albumImage ? (
@@ -136,7 +136,7 @@ const Playlist = () => {
               showUploadList={false}
               onChange={handleChange}
               action={
-                'https://pt20s-music-4f5t.onrender.com/api/albums/createImageAlbum'
+                'https://pt20-music.onrender.com/api/albums/createImageAlbum'
               }
             >
               {albumImage ? (
