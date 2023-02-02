@@ -96,7 +96,8 @@ const Playlist = () => {
     axios.get('albums/getAnAlbum/' + id).then((res) => {
       // setAlbum(res.data.album)
       setEditValue(res.data.album)
-      setAlbumImage(res.data.album?.background[0])
+      console.log(res.data.album)
+      setAlbumImage(res.data.album?.background)
     })
   }, [id])
 

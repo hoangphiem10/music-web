@@ -15,27 +15,32 @@ const { Meta } = Card
 const Album = () => {
   const dispatch = useDispatch()
   const navigate = useNavigate()
-  const user = useSelector((state) => state.auth.login.currentUser)
-  let axiosJWT = authService.createAxios(user, dispatch, loginSuccess, navigate)
   const [listAlbum, setListAlbum] = useState([])
   const [search, setSearch] = useState('')
   useEffect(() => {
-    axios.get('albums/getAllAlbums').then((res) => {
-      if (search) {
-        const Albums = res.data.albums
-        const l = Albums.filter(
-          (album) =>
-            album.albumName?.toLowerCase().includes(search.toLowerCase()) ||
-            album.albumDescription
-              ?.toLowerCase()
-              .includes(search.toLowerCase()),
-        )
-        setListAlbum(l)
-        console.log(l)
-      } else {
-        setListAlbum(res.data.albums)
-      }
-    })
+    axios
+      .get('albums/getAllAlbums')
+      .then((res) => {
+        console.log('hihi')
+
+        if (search) {
+          const Albums = res.data.albums
+          const l = Albums.filter(
+            (album) =>
+              album.albumName?.toLowerCase().includes(search.toLowerCase()) ||
+              album.albumDescription
+                ?.toLowerCase()
+                .includes(search.toLowerCase()),
+          )
+          setListAlbum(l)
+          console.log(l)
+        } else {
+          setListAlbum(res.data.albums)
+        }
+      })
+      .catch((err) => {
+        console.log(err)
+      })
   }, [search])
   return (
     <div className="body">

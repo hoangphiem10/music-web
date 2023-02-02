@@ -2,8 +2,8 @@ const mongoose = require('mongoose')
 const albumsSchema = new mongoose.Schema(
     {
         background: {
-            type: Array,
-            default: [],
+            type: String,
+            default: '',
         },
         albumName: {
             type: String,

@@ -3,7 +3,7 @@ const listSongsSchema = new mongoose.Schema(
     {
         image: {
             type: String,
-            default: [],
+            default: '',
         },
         name: {
             type: String,
