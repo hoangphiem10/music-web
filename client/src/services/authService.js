@@ -95,11 +95,14 @@ const refreshToken = async (navigate) => {
     console.log(err)
   }
 }
-
+let myInterceptor = null
 const createAxios = (user, dispatch, stateSuccess, navigate) => {
-  newInstance.interceptors.request.use(
+  const getUser = () => user
+  if (myInterceptor) return newInstance
+  myInterceptor = newInstance.interceptors.request.use(
     async (config) => {
       let date = new Date()
+      const user = getUser()
       const decoded = jwt_decode(user?.accessToken)
 
       console.log(decoded)
@@ -116,8 +119,8 @@ const createAxios = (user, dispatch, stateSuccess, navigate) => {
         console.log('hihi')
 
         config.headers['token'] = 'Bearer ' + data.accessToken
-        return config
       }
+      return config
     },
     (err) => {
       return Promise.reject(err)
