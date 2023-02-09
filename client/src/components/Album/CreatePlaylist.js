@@ -12,7 +12,6 @@ const Playlist = () => {
   const navigate = useNavigate()
   const dispatch = useDispatch()
   const user = useSelector((state) => state.auth.login.currentUser)
-  const accessToken = user?.accessToken ? user?.accessToken : null
   let axiosJWT = authService.createAxios(user, dispatch, loginSuccess, navigate)
   const [albumImage, setAlbumImage] = useState(null)
   const [albumName, setAlbumName] = useState(null)
@@ -94,9 +93,7 @@ const Playlist = () => {
             accept=".png,.jpeg,.jpg"
             showUploadList={false}
             onChange={handleChange}
-            action={
-              'https://pt20-music.onrender.com/api/albums/createImageAlbum'
-            }
+            action={'http://localhost:8080/api/albums/createImageAlbum'}
           >
             {albumImage ? (
               <img
@@ -135,9 +132,7 @@ const Playlist = () => {
               accept=".png,.jpeg,.jpg"
               showUploadList={false}
               onChange={handleChange}
-              action={
-                'https://pt20-music.onrender.com/api/albums/createImageAlbum'
-              }
+              action={'http://localhost:8080/api/albums/createImageAlbum'}
             >
               {albumImage ? (
                 <img

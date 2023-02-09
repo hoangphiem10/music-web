@@ -136,9 +136,7 @@ const Playlist = () => {
             listType="picture-card"
             showUploadList={false}
             onChange={handleChange}
-            action={
-              'https://pt20-music.onrender.com/api/albums/createImageAlbum'
-            }
+            action={'http://localhost:8080/api/albums/createImageAlbum'}
           >
             {albumImage ? (
               <img
@@ -182,9 +180,7 @@ const Playlist = () => {
               listType="picture-card"
               showUploadList={false}
               onChange={handleChange}
-              action={
-                'https://pt20-music.onrender.com/api/albums/createImageAlbum'
-              }
+              action={'http://localhost:8080/api/albums/createImageAlbum'}
             >
               {albumImage ? (
                 <img

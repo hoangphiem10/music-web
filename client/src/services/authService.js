@@ -95,12 +95,17 @@ const refreshToken = async (navigate) => {
     console.log(err)
   }
 }
+
 let myInterceptor = null
+
 const createAxios = (user, dispatch, stateSuccess, navigate) => {
+  // console.log(newInstance.interceptors)
   const getUser = () => user
   if (myInterceptor) return newInstance
   myInterceptor = newInstance.interceptors.request.use(
     async (config) => {
+      // newInstance.interceptors.request.eject(interceptor)
+      // console.log({ user })
       let date = new Date()
       const user = getUser()
       const decoded = jwt_decode(user?.accessToken)
@@ -128,6 +133,7 @@ const createAxios = (user, dispatch, stateSuccess, navigate) => {
   )
   return newInstance
 }
+
 const forgotPassword = async (value, navigate) => {
   console.log(value)
   await axios

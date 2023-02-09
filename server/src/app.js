@@ -12,11 +12,7 @@ dotenv.config()
 
 app.use(
     cors({
-        origin: [
-            'http://localhost:3000',
-            'https://pt20-music-web.onrender.com',
-            'https://exquisite-choux-250f1c.netlify.app',
-        ],
+        origin: 'http://localhost:3000',
         credentials: true,
     }),
 )
