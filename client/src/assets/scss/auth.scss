@@ -1,0 +1,17 @@
+.auth-container {
+  .ant-input-affix-wrapper,
+  .ant-input {
+    border-radius: 10px !important;
+  }
+  height: 100vh;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  @media screen and (max-width: 480px) {
+    .ant-card {
+      margin: 40px !important;
+    }
+  }
+}
