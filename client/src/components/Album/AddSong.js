@@ -116,7 +116,7 @@ const AddSong = () => {
               listType="picture-card"
               showUploadList={false}
               onChange={handleChange}
-              action="http://localhost:8080/api/albums/createImageAlbum"
+              action="https://pt20s-music.onrender.com/api/albums/createImageAlbum"
             >
               {imageSong ? (
                 <img

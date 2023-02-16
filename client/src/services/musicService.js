@@ -126,6 +126,7 @@ const createAlbum = async (
   user,
   axiosJWT,
 ) => {
+  // }
   await axiosJWT
     .post(
       'albums/createAlbums',
@@ -134,7 +135,9 @@ const createAlbum = async (
         albumName: albumName,
         albumDescription: albumDesc,
       },
-      { headers: { token: `Bearer ${user.accessToken}` } },
+      {
+        headers: { token: `Bearer ${user.accessToken}` },
+      },
     )
     .then((res) => {
       navigate('/my-playlist/' + res.data.album._id)

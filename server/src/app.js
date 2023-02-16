@@ -12,7 +12,10 @@ dotenv.config()
 
 app.use(
     cors({
-        origin: 'http://localhost:3000',
+        origin: [
+            'http://localhost:3000',
+            'https://pt20-music-web.onrender.com',
+        ],
         credentials: true,
     }),
 )

@@ -121,7 +121,6 @@ const createAxios = (user, dispatch, stateSuccess, navigate) => {
           accessToken: data?.accessToken,
         }
         dispatch(loginSuccess(refreshUser))
-        console.log('hihi')
 
         config.headers['token'] = 'Bearer ' + data.accessToken
       }

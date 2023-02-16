@@ -1,3 +1,4 @@
+const { cloudinary } = require('../../utils/cloundinary')
 const Album = require('../models/Albums.models')
 const ImageAlbum = require('../models/ImageAlbum.models')
 
@@ -14,15 +15,20 @@ class AlbumsController {
     }
     // [POST] /api/albums/createAlbums
     createAlbums = async (req, res) => {
-        const newAlbum = new Album({
-            background: req.body.background,
-            albumName: req.body.albumName,
-            albumDescription: req.body.albumDescription,
-        })
         try {
+            const fileStr = req.body.background
+            const uploadResponse = await cloudinary.uploader.upload(fileStr, {
+                upload_preset: 'album',
+            })
+            const newAlbum = new Album({
+                background: uploadResponse.url,
+                albumName: req.body.albumName,
+                albumDescription: req.body.albumDescription,
+            })
             const savedAlbum = await newAlbum.save()
             res.status(200).send({ album: savedAlbum })
         } catch (error) {
+            console.error(error)
             res.status(400).send({ success: false, msg: error })
         }
     }
@@ -41,15 +47,26 @@ class AlbumsController {
 
     // [PUT] /api/albums/updateAlbum/:id
     updateAlbum = async (req, res) => {
-        const id = req.params.id
-        const { background, albumName, albumDescription } = req.body
-        Album.findByIdAndUpdate(id, {
-            background,
-            albumName,
-            albumDescription,
-        })
-            .then((album) => res.status(200).json({ album }))
-            .catch((err) => res.status(400).json({ message: err }))
+        try {
+            const id = req.params.id
+            const fileStr = req.body.background
+            const uploadResponse = await cloudinary.uploader.upload(fileStr, {
+                upload_preset: 'album',
+            })
+            // console.log(uploadResponse.url)
+            const background = uploadResponse.url
+            const albumName = req.body.albumName
+            const albumDescription = req.body.albumDescription
+            Album.findByIdAndUpdate(id, {
+                background,
+                albumName,
+                albumDescription,
+            })
+                .then((album) => res.status(200).json({ album }))
+                .catch((err) => res.status(400).json({ message: err }))
+        } catch (error) {
+            res.status(400).send({ success: false, msg: error })
+        }
     }
     // [GET] /api/albums/getAnAlbum/:albumId
     getAnAlbum = async (req, res) => {
