@@ -28,6 +28,7 @@ const ListSong = () => {
   const [track_number, setTrackNumber] = useState(null)
   const [form] = Form.useForm()
   let listSong = useSelector((state) => state.song.listsong.songs)
+  const currentSong = useSelector((state) => state.song.song)
   let [editValue, setEditValue] = useState({
     name: '',
     image: '',
@@ -164,7 +165,9 @@ const ListSong = () => {
                 return (
                   <>
                     <div
-                      className={`row ${index === track_number && 'activeRow'}`}
+                      className={`row ${
+                        index === currentSong.track_number && 'activeRow'
+                      }`}
                       key={index}
                       onClick={(e) => {
                         setTrackNumber(index)
@@ -227,7 +230,7 @@ const ListSong = () => {
                             listType="picture-card"
                             showUploadList={false}
                             onChange={handleChange}
-                            action="http://localhost:8080/api/albums/createImageAlbum"
+                            action="https://pt20s-music.onrender.com/api/albums/createImageAlbum"
                           >
                             {editValue.image ? (
                               <img

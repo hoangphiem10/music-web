@@ -16,12 +16,6 @@ const listSongsSchema = new mongoose.Schema(
         duration: {
             type: Number,
         },
-        // artist: {
-        //     type: String,
-        // },
-        // albumName: {
-        //     type: String,
-        // },
     },
     { timestamps: true },
 )

@@ -12,6 +12,7 @@
     "axios": "^1.2.1",
     "dayjs": "^1.11.7",
     "get-blob-duration": "^1.2.0",
+    "js-cookies": "^1.0.4",
     "jwt-decode": "^3.1.2",
     "localforage": "^1.10.0",
     "moment": "^2.29.4",
