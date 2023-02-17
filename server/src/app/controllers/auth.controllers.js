@@ -71,7 +71,7 @@ class AuthController {
                 res.cookie('refreshToken', refreshToken, {
                     httpOnly: true,
                     //when deploy,set secure true
-                    secure: false,
+                    secure: true,
                     path: '/',
                     sameSite: 'strict',
                 })
@@ -128,8 +128,8 @@ class AuthController {
                 refreshTokens.push(newRefreshToken)
                 res.cookie('refreshToken', newRefreshToken, {
                     httpOnly: true,
-                    //when deploy,set secure true
-                    secure: false,
+                    // when deploy,set secure true
+                    secure: true,
                     path: '/',
                     sameSite: 'strict',
                 })
